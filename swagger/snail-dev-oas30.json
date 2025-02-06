@@ -1,0 +1,104 @@
+{
+  "openapi" : "3.0.1",
+  "info" : {
+    "title" : "Snail",
+    "version" : "1.0"
+  },
+  "servers" : [ {
+    "url" : "https://4e7ravvwtd.execute-api.us-west-2.amazonaws.com/{basePath}",
+    "variables" : {
+      "basePath" : {
+        "default" : "dev"
+      }
+    }
+  } ],
+  "paths" : {
+    "/products/{id}" : {
+      "get" : {
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses": {}
+      }
+    },
+    "/products" : {
+      "get" : {
+        "parameters" : [
+          {
+            "name" : "limit",
+            "in" : "query",
+            "schema" : {
+              "type" : "string"
+            }
+          }, {
+          "name" : "page",
+          "in" : "query",
+          "schema" : {
+            "type" : "string"
+          }
+        }
+        ],
+        "responses": {}
+      },
+      "post" : {
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/postProduct"
+              }
+            }
+          }
+        },
+        "responses": {}
+      },
+      "put": {
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/updateProduct"
+              }
+            }
+          }
+        },
+        "responses": {}
+      }
+    }
+  },
+  "components" : {
+    "schemas": {
+      "postProduct": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          }
+        }
+      },
+      "updateProduct": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          }
+        }
+    }
+    }
+  }
+}

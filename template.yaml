@@ -1,0 +1,121 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  Snail
+
+  Sample SAM Template for test-lambda-minh
+
+Globals:
+  Function:
+    Timeout: 20
+    MemorySize: 128
+    Environment:
+      Variables:
+        ENV: aws
+    LoggingConfig:
+      LogFormat: JSON
+Resources:
+  ProductsS3:
+    Type: AWS::S3::Bucket
+    "Properties": {
+      BucketName: snail-minh
+    }
+
+  ProductsFunctionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - lambda.amazonaws.com
+            Action:
+              - 'sts:AssumeRole'
+      Path: /
+      Policies:
+        - PolicyName: S3AccessPolicy
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - s3:ListBucket
+                  - s3:GetObject
+                  - s3:PutObject
+#                Resource: !Sub '${ProductsS3.Arn}/*'
+                Resource: "*"
+              - Effect: Allow
+                Action:
+                  - logs:CreateLogGroup
+                  - logs:CreateLogStream
+                  - logs:PutLogEvents
+                Resource: "*"
+
+  ApiDeployment:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName: dev
+
+  SwaggerFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: ./swagger
+      Handler: main.lambda_handler
+      Runtime: python3.11
+      Architectures:
+        - x86_64
+      Events:
+        SwaggerGet:
+          Type: Api
+          Properties:
+            Path: /swagger-ui
+            Method: get
+            RestApiId: !Ref ApiDeployment
+
+  ProductsFunction:
+    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Properties:
+      Role: !GetAtt ProductsFunctionRole.Arn
+      CodeUri: ./
+      Handler: src/functions/products.lambda_handler
+      Runtime: python3.11
+      Architectures:
+      - x86_64
+      Events:
+        getProducts:
+          Type: Api
+          Properties:
+            Path: /products
+            Method: get
+            RestApiId: !Ref ApiDeployment
+        getDetailProduct:
+          Type: Api
+          Properties:
+            Path: /products/{productId}
+            Method: get
+            RestApiId: !Ref ApiDeployment
+        postProducts:
+          Type: Api
+          Properties:
+            Path: /products
+            Method: post
+            RestApiId: !Ref ApiDeployment
+        putProducts:
+          Type: Api
+          Properties:
+            Path: /products/{productId}
+            Method: put
+            RestApiId: !Ref ApiDeployment
+
+
+
+
+#  ProductsFunctionPolicy:
+#    Type: AWS::Lambda::Permission
+#    Properties:
+#      Action: lambda:InvokeFunction
+#      FunctionName: !GetAtt ProductsFunction.Arn
+#      Principal: s3.amazonaws.com
+#      SourceArn: !GetAttr ProductsS3.Arn
