@@ -1,26 +1,21 @@
 import os
 from logging import getLogger
 from string import Template
+
 os.environ["ENV"] = "dev"
-application_name = 'Snail App Swagger UI'
-env_name = os.environ['ENV']
+application_name = "Snail App Swagger UI"
+env_name = os.environ["ENV"]
 
 logger = getLogger(__name__)
 
 
 def lambda_handler(event, context):
-    with open('snail-dev-oas30.json') as f:
+    with open("snail-dev-oas30.json") as f:
         swagger_doc = f.read()
         logger.info("Read file")
 
     body = generate_swagger_page_body(swagger_doc, application_name)
-    return {
-        "statusCode": 200,
-        "headers": {
-            "Content-Type": "text/html"
-        },
-        "body": body
-    }
+    return {"statusCode": 200, "headers": {"Content-Type": "text/html"}, "body": body}
 
 
 def generate_swagger_page_body(swagger_doc, app_name):
@@ -85,4 +80,6 @@ def generate_swagger_page_body(swagger_doc, app_name):
       }
   </script>
   </body>
-</html>""" % {"spec": swagger_doc}
+</html>""" % {
+        "spec": swagger_doc
+    }

@@ -112,7 +112,7 @@ class ProductRepo(BaseRepo):
         if self.check_exist_by_name(product.name, product.id):
             raise AlreadyExist(f"Name {product.name} already exist")
 
-        data[str(product.id)] = {"id": product.id, "name": product.name}
+        data[str(product.id)] = {"id": product.id, "name": product.name, "price": product.price}
         file_data = self.set_file_data(data)
         self.s3_client.put_object_content(self.file_name, file_data)
 
