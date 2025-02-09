@@ -20,7 +20,7 @@ class ProductService(BaseService):
         Get all products list
         """
         data = ProductRepo().get_list()
-        return [{"id": i.id, "name": i.name} for i in data]
+        return [{"id": i.id, "name": i.name, "price": i.price} for i in data]
 
     def get_detail_by_id(self, **kwargs) -> dict:
         """
@@ -32,7 +32,7 @@ class ProductService(BaseService):
         data = product_repo.get_detail_by_id(product_id)
         if not data:
             raise NotFound(f"Not found product {product_id}")
-        return {"id": data.id, "name": data.name}
+        return {"id": data.id, "name": data.name, "price": data.price}
 
     @timer
     def create(self, **kwargs) -> dict:

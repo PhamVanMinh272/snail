@@ -58,8 +58,8 @@ if __name__ == "__main__":
     event = {
         "resource": Routes.Products.REFS_PRODUCT_ID,
         "httpMethod": HTTPMethods.PUT,
-        "pathParameters": {"productId": "2"},
-        "body": json.dumps({"name": "products 2"}),
+        "pathParameters": {"productId": "5"},
+        "body": json.dumps({"name": "Cau Yonex", "price": 340000}),
     }
     rs = lambda_handler(event, None)
     body_rs = json.loads(rs["body"])
