@@ -109,6 +109,42 @@ Resources:
             Method: put
             RestApiId: !Ref ApiDeployment
 
+  CategoriesFunction:
+    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Properties:
+      Role: !GetAtt ProductsFunctionRole.Arn
+      CodeUri: ./
+      Handler: src/functions/categories.lambda_handler
+      Runtime: python3.11
+      Architectures:
+        - x86_64
+      Events:
+        getCategories:
+          Type: Api
+          Properties:
+            Path: /categories
+            Method: get
+            RestApiId: !Ref ApiDeployment
+        getDetailCategory:
+          Type: Api
+          Properties:
+            Path: /categories/{categoryId}
+            Method: get
+            RestApiId: !Ref ApiDeployment
+        postCategories:
+          Type: Api
+          Properties:
+            Path: /categories
+            Method: post
+            RestApiId: !Ref ApiDeployment
+        putCategories:
+          Type: Api
+          Properties:
+            Path: /categories/{categoryId}
+            Method: put
+            RestApiId: !Ref ApiDeployment
+
+
 
 
 
