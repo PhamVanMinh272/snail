@@ -28,14 +28,8 @@ class CategoryRepo(BaseRepo):
         category.id = self.get_new_id()
         category_dict = category.model_dump()
 
-        # update new data to file data
-        data_dict = self.get_data()
-        data_dict[str(category.id)] = category_dict
-        file_data = self.set_file_data(data_dict)
-
-        # upload to s3
-        logger.info("Uploading data ...")
-        self.s3_client.put_object_content(self.file_name, file_data)
+        # save
+        self.upload_data(category.id, category_dict)
         logger.info(f"Added new category name {category.name}")
         return category.id
 
@@ -50,8 +44,8 @@ class CategoryRepo(BaseRepo):
         if self.check_exist_by_name(category.name, category.id):
             raise AlreadyExist(f"Name {category.name} already exist")
 
-        data[str(category.id)] = {"id": category.id, "name": category.name, "parent_id": category.parent_id}
-        file_data = self.set_file_data(data)
-        self.s3_client.put_object_content(self.file_name, file_data)
+        updated_data = {"id": category.id, "name": category.name, "parent_id": category.parent_id}
+        self.upload_data(category.id, updated_data)
+        logger.info(f"Updated {category.name}")
 
         return category.id

@@ -19,3 +19,8 @@ class PathProductSch(BaseModel):
 
 class UpdateProductSch(NewProductSch):
     id: int = Field(alias=ColumnLabel.Product.PRODUCT_ID)
+
+
+class SearchSch(BaseModel):
+    category_id: Optional[list[int]] = Field(default=None)
+    name: Optional[str] = Field(default=None)

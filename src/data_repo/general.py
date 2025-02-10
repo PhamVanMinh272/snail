@@ -81,3 +81,13 @@ class BaseRepo:
         if not ids:
             return 1
         return max(ids) + 1
+
+    def upload_data(self, key_id: int, single_data: dict):
+        # update new data to file data
+        data_dict = self.get_data()
+        data_dict[str(key_id)] = single_data
+        file_data = self.set_file_data(data_dict)
+
+        # upload to s3
+        logger.info("Uploading data ...")
+        self.s3_client.put_object_content(self.file_name, file_data)
