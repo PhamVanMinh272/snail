@@ -1,9 +1,12 @@
 import logging
+import uuid
 
 from src.common.exceptions import FileS3NotFound, NotFound
 from src.common.utils import timer
 from src.data_repo.product import ProductRepo
-from src.schemas.product import NewProductSch, UpdateProductSch, PathProductSch
+from src.data_repo.image import ImageRepo
+from src.schemas.product import NewProductSch, UpdateProductSch, PathProductSch, UploadImgSch
+from src.schemas.image import NewImageSch
 from src.services.general import BaseService
 
 logger = logging.getLogger(__name__)
@@ -20,7 +23,18 @@ class ProductService(BaseService):
         Get all products list
         """
         data = ProductRepo().get_list()
-        return [{"id": i.id, "name": i.name, "price": i.price} for i in data]
+        all_img = ImageRepo().get_list()
+        img_dict = {}
+        for i in all_img:
+            img_dict.update({
+                i.parent_id: {
+                    "id": i.id,
+                    "name": i.name
+                }
+            })
+        response = [
+            {"id": i.id, "name": i.name, "price": i.price, "image": img_dict.get(i.id)} for i in data]
+        return response
 
     def get_detail_by_id(self, **kwargs) -> dict:
         """
@@ -62,3 +76,20 @@ class ProductService(BaseService):
 
     def delete(self, **kwargs) -> dict:
         pass
+
+    def upload_img(self, **kwargs):
+        logger.info("Creating image ...")
+        new_upload = UploadImgSch(**kwargs)
+
+        # update data
+        img_name = f"{uuid.uuid4()}.jpg"
+        img_repo = ImageRepo()
+        new_img = NewImageSch(
+            name=img_name,
+            parent_id=new_upload.parent_id,
+            parent_type=new_upload.parent_type
+        )
+        item_id = img_repo.add_new(new_img)
+
+        # upload image
+        img_repo.upload_image(kwargs.get("file"), img_name)

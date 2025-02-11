@@ -11,15 +11,16 @@ class ColumnLabel:
 
 class Routes:
     class Products:
-        REFS_PRODUCT_ID = "/products/{productId}"
+        REF_PRODUCT_ID = "/products/{productId}"
+        REF_PRODUCT_UPLOAD_IMAGE = "/products/{productId}/upload-img"
         REF_PRODUCTS = "/products"
 
     class Categories:
-        REFS_CATEGORY_ID = "/categories/{categoryId}"
+        REF_CATEGORY_ID = "/categories/{categoryId}"
         REF_CATEGORY = "/categories"
 
     class Images:
-        REFS_IMAGE_ID = "/images/{imageId}"
+        REF_IMAGE_ID = "/images/{imageId}"
         REF_IMAGE = "/images"
 
 

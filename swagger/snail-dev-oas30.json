@@ -49,6 +49,30 @@
         "responses": {}
       }
     },
+    "/products/{id}/upload-img" : {
+      "post" : {
+        "tags": ["Product"],
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/postUploadImage"
+              }
+            }
+          }
+        },
+        "responses": {}
+      }
+    },
     "/products" : {
       "get" : {
         "tags": ["Product"],
@@ -201,7 +225,16 @@
             "type": "number"
           }
         }
-    }
+    },
+      "postUploadImage": {
+        "type": "object",
+        "properties": {
+          "file": {
+            "type": "string",
+            "format": "binary"
+          }
+        }
+      }
     }
   }
 }

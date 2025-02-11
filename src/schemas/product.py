@@ -1,4 +1,5 @@
 from pydantic import BaseModel, Field, BeforeValidator
+from setuptools.command.alias import alias
 from typing_extensions import Annotated, Optional
 from src.common.enum import ColumnLabel
 
@@ -19,6 +20,12 @@ class PathProductSch(BaseModel):
 
 class UpdateProductSch(NewProductSch):
     id: int = Field(alias=ColumnLabel.Product.PRODUCT_ID)
+
+
+class UploadImgSch(BaseModel):
+    file: bytes
+    parent_id: int = Field(alias=ColumnLabel.Product.PRODUCT_ID)
+    parent_type: Optional[int] = Field(default=1)
 
 
 class SearchSch(BaseModel):

@@ -16,13 +16,13 @@ def lambda_handler(event, context):
     category_service = CategoryService()
     get_routes = {
         Routes.Categories.REF_CATEGORY: category_service.get_list,
-        Routes.Categories.REFS_CATEGORY_ID: category_service.get_detail_by_id,
+        Routes.Categories.REF_CATEGORY_ID: category_service.get_detail_by_id,
     }
     post_routes = {
         Routes.Categories.REF_CATEGORY: category_service.create,
     }
 
-    put_routes = {Routes.Categories.REFS_CATEGORY_ID: category_service.update}
+    put_routes = {Routes.Categories.REF_CATEGORY_ID: category_service.update}
 
     verb_paths = {
         HTTPMethods.GET: get_routes,

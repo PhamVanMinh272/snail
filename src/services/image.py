@@ -1,4 +1,6 @@
+import base64
 import logging
+import uuid
 
 from src.common.exceptions import FileS3NotFound, NotFound
 from src.common.utils import timer
@@ -37,12 +39,19 @@ class ImageService(BaseService):
     @timer
     def create(self, **kwargs) -> dict:
         """
-        Create new Product
+        Create new image
         """
-        logger.info("Creating category ...")
+        logger.info("Creating image ...")
         new_item = NewImageSch(**kwargs)
-        category_repo = ImageRepo()
-        item_id = category_repo.add_new(new_item)
+
+        # update data
+        new_item.name = f"{uuid.uuid4()}.jpg"
+        repo = ImageRepo()
+        item_id = repo.add_new(new_item)
+
+        # upload image
+        repo.upload_image(new_item.image, new_item.name)
+
         return {"id": item_id}
 
     def update(self, **kwargs) -> dict:
@@ -51,13 +60,13 @@ class ImageService(BaseService):
         :param kwargs:
         :return:
         """
-        logger.info("Updating product ...")
-        update_category = UpdateImageSch(**kwargs)
-        category_repo = ImageRepo()
-        item_id = category_repo.update_data(update_category)
+        logger.info("Updating image ...")
+        update_data = UpdateImageSch(**kwargs)
+        repo = ImageRepo()
+        item_id = repo.update_data(update_data)
         if not item_id:
-            logger.info(f"Not found category {update_category.id}")
-            raise NotFound(f"Not found category {update_category.id}")
+            logger.info(f"Not found image {update_data.id}")
+            raise NotFound(f"Not found image {update_data.id}")
         return {"id": item_id}
 
     def delete(self, **kwargs) -> dict:

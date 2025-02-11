@@ -1,3 +1,4 @@
+from src.common.s3_client import S3Client
 from src.data_repo.general import BaseRepo
 from src.schemas.image import NewImageSch, UpdateImageSch
 from src.schemas.db_file_models.models import ImagesTable
@@ -8,6 +9,8 @@ from src.setttings import logger
 class ImageRepo(BaseRepo):
     def __init__(self):
         super().__init__("images")
+        self.s3_client_image = S3Client("www.snail.com")
+        self.image_s3_folder = "public"
 
     def add_new(self, image: NewImageSch) -> int:
         """
@@ -47,4 +50,5 @@ class ImageRepo(BaseRepo):
 
         return image.id
 
-
+    def upload_image(self, image_data_str: bytes, image_name: str):
+        self.s3_client_image.put_image(f"{self.image_s3_folder}/{image_name}", image_data_str)

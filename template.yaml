@@ -102,6 +102,12 @@ Resources:
             Path: /products
             Method: post
             RestApiId: !Ref ApiDeployment
+        postUploadImg:
+          Type: Api
+          Properties:
+            Path: /products/{productId}/upload-img
+            Method: post
+            RestApiId: !Ref ApiDeployment
         putProducts:
           Type: Api
           Properties:

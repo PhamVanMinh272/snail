@@ -1,3 +1,4 @@
+import base64
 import json
 
 from src.common.api_utils import exception_handler
@@ -16,13 +17,14 @@ def lambda_handler(event, context):
     product_service = ProductService()
     get_routes = {
         Routes.Products.REF_PRODUCTS: product_service.get_list,
-        Routes.Products.REFS_PRODUCT_ID: product_service.get_detail_by_id,
+        Routes.Products.REF_PRODUCT_ID: product_service.get_detail_by_id,
     }
     post_routes = {
         Routes.Products.REF_PRODUCTS: product_service.create,
+        Routes.Products.REF_PRODUCT_UPLOAD_IMAGE: product_service.upload_img
     }
 
-    put_routes = {Routes.Products.REFS_PRODUCT_ID: product_service.update}
+    put_routes = {Routes.Products.REF_PRODUCT_ID: product_service.update}
 
     verb_paths = {
         HTTPMethods.GET: get_routes,
@@ -33,16 +35,28 @@ def lambda_handler(event, context):
     paths = verb_paths.get(verb)
     func = paths.get(resource)
 
-    # prepare params
+    # get params
     path_params = event.get("pathParameters") if event.get("pathParameters") else {}
     query_params = (
         event.get("queryStringParameters") if event.get("queryStringParameters") else {}
     )
     body = event.get("body", "{}") if event.get("body") else "{}"
+    content_type = event["headers"].get('content-type') or event["headers"].get('Content-Type')
+    if content_type and 'multipart/form-data' in content_type:
+        body = {"file": event.get("body", "{}").encode("utf-8")}
+        # print(body)
+        # body = {"file": event.get("body-json", "{}")}
+        # print(body)
+        # imageBody = base64.b64decode(body)
+        # print(imageBody)
+    else:
+        body = json.loads(body)
+
+    # prepare params
     data = {}
     data.update(path_params)
     data.update(query_params)
-    data.update(json.loads(body))
+    data.update(body)
 
     # run func
     data = func(**data)
@@ -56,8 +70,9 @@ if __name__ == "__main__":
     #     "method": "POST"
     # }
     event = {
-        "resource": Routes.Products.REFS_PRODUCT_ID,
-        "httpMethod": HTTPMethods.PUT,
+        "resource": Routes.Products.REF_PRODUCTS,
+        "headers": {'content-type': ""},
+        "httpMethod": HTTPMethods.GET,
         "pathParameters": {"productId": "5"},
         "body": json.dumps({"name": "Cau Yonex", "price": 340000}),
     }

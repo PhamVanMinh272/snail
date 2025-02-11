@@ -9,7 +9,7 @@ def strip_str(s: str):
 
 class NewImageSch(BaseModel):
     id: Optional[int] = Field(default=None, alias="id")
-    name: Annotated[str, BeforeValidator(strip_str)] = Field(min_length=1)
+    name: Annotated[Optional[str], BeforeValidator(strip_str)] = Field(min_length=1)
     parent_id: int
     parent_type: int  # 1-product
 

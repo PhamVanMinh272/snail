@@ -1,4 +1,6 @@
+import base64
 import json
+import io
 
 import boto3
 
@@ -28,4 +30,14 @@ class S3Client:
         json_data = json.dumps(body)
         self.s3.put_object(
             Body=json_data.encode("utf-8"), Bucket=self.bucket_name, Key=object_name
+        )
+
+    def put_image(self, object_name: str, body: bytes):
+        image_bytes = base64.b64decode(body)
+        # image_bytes = io.BytesIO(image_bytes)
+        # image_bytes = body
+        self.s3.put_object(
+            Body=image_bytes,
+            Bucket=self.bucket_name,
+            Key=object_name
         )
