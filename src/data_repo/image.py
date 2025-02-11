@@ -1,0 +1,50 @@
+from src.data_repo.general import BaseRepo
+from src.schemas.image import NewImageSch, UpdateImageSch
+from src.schemas.db_file_models.models import ImagesTable
+from src.common.exceptions import AlreadyExist
+from src.setttings import logger
+
+
+class ImageRepo(BaseRepo):
+    def __init__(self):
+        super().__init__("images")
+
+    def add_new(self, image: NewImageSch) -> int:
+        """
+        Add new image
+        :param image:
+        :return:
+        """
+        # check exist
+        if self.check_exist_by_name(image.name):
+            raise AlreadyExist(f"Images {image.name} already exist")
+        logger.info("Validated data")
+
+        # new data
+        image.id = self.get_new_id()
+        image_row = ImagesTable(**image.model_dump())
+        dict_data = image_row.model_dump()
+
+        # save
+        self.upload_data(dict_data)
+        logger.info(f"Added new image name {image_row.name}")
+        return image_row.id
+
+    def update_data(self, image: UpdateImageSch) -> int | None:
+        """ """
+        data = self.get_data()
+        single_obj = data.get(str(image.id))
+        if not single_obj:
+            return None
+
+        # check unique
+        if self.check_exist_by_name(image.name, image.id):
+            raise AlreadyExist(f"Name {image.name} already exist")
+
+        updated_data = ImagesTable(**image.model_dump()).model_dump()
+        self.upload_data(updated_data)
+        logger.info(f"Updated {image.name}")
+
+        return image.id
+
+

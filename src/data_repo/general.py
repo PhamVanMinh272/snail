@@ -2,7 +2,7 @@ import copy
 from src.setttings import logger
 import botocore
 from src.common.s3_client import S3Client
-from src.setttings import S3_BUCKET
+from src.setttings import S3_BUCKET, FILE_PATH_TMP
 from src.common.utils import DictObj
 
 
@@ -14,6 +14,8 @@ class BaseRepo:
         self.data = {}
         self.s3_client = S3Client(S3_BUCKET)
         self.file_name = f"{table_name}.json"
+        self.file_path_tmp = f"{FILE_PATH_TMP}{self.file_name}"
+        self.s3_client = S3Client(S3_BUCKET)
 
     def set_file_data(self, data: dict):
         self.init_table_content["data"] = data
@@ -82,7 +84,8 @@ class BaseRepo:
             return 1
         return max(ids) + 1
 
-    def upload_data(self, key_id: int, single_data: dict):
+    def upload_data(self, single_data: dict):
+        key_id = single_data.get("id") or self.get_new_id()
         # update new data to file data
         data_dict = self.get_data()
         data_dict[str(key_id)] = single_data

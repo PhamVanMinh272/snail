@@ -37,7 +37,7 @@ class ProductRepo(BaseRepo):
         product_dict = product.model_dump()
 
         # save
-        self.upload_data(product.id, product_dict)
+        self.upload_data(product_dict)
         logger.info(f"Added new product name {product.name}")
         return product.id
 
@@ -53,7 +53,7 @@ class ProductRepo(BaseRepo):
             raise AlreadyExist(f"Name {product.name} already exist")
 
         updated_data = {"id": product.id, "name": product.name, "price": product.price}
-        self.upload_data(product.id, updated_data)
+        self.upload_data(updated_data)
         logger.info(f"Updated {product.name}")
 
         return product.id

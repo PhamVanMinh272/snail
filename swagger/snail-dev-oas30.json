@@ -15,7 +15,7 @@
   "paths" : {
     "/products/{id}" : {
       "get" : {
-        "tags": "Product",
+        "tags": ["Product"],
         "parameters" : [ {
           "name" : "id",
           "in" : "path",
@@ -27,7 +27,7 @@
         "responses": {}
       },
       "put": {
-        "tags": "Product",
+        "tags": ["Product"],
         "parameters" : [ {
           "name" : "id",
           "in" : "path",
@@ -51,7 +51,7 @@
     },
     "/products" : {
       "get" : {
-        "tags": "Product",
+        "tags": ["Product"],
         "parameters" : [
           {
             "name" : "limit",
@@ -70,7 +70,7 @@
         "responses": {}
       },
       "post" : {
-        "tags": "Product",
+        "tags": ["Product"],
         "requestBody": {
           "required": true,
           "content": {
@@ -86,7 +86,7 @@
     },
     "/categories/{id}" : {
       "get" : {
-        "tags": "Category",
+        "tags": ["Category"],
         "parameters" : [ {
           "name" : "id",
           "in" : "path",
@@ -98,7 +98,7 @@
         "responses": {}
       },
       "put": {
-        "tags": "Category",
+        "tags": ["Category"],
         "parameters" : [ {
           "name" : "id",
           "in" : "path",
@@ -122,7 +122,7 @@
     },
     "/categories" : {
       "get" : {
-        "tags": "Category",
+        "tags": ["Category"],
         "parameters" : [
           {
             "name" : "limit",
@@ -141,7 +141,7 @@
         "responses": {}
       },
       "post" : {
-        "tags": "Category",
+        "tags": ["Category"],
         "requestBody": {
           "required": true,
           "content": {

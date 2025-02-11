@@ -5,6 +5,9 @@ class ColumnLabel:
     class Category:
         CATEGORY_ID = "categoryId"
 
+    class Image:
+        IMAGE_ID = "imageId"
+
 
 class Routes:
     class Products:
@@ -14,6 +17,10 @@ class Routes:
     class Categories:
         REFS_CATEGORY_ID = "/categories/{categoryId}"
         REF_CATEGORY = "/categories"
+
+    class Images:
+        REFS_IMAGE_ID = "/images/{imageId}"
+        REF_IMAGE = "/images"
 
 
 class HTTPMethods:

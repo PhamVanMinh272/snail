@@ -1,17 +1,12 @@
 from src.common.exceptions import AlreadyExist
-from src.common.s3_client import S3Client
 from src.data_repo.general import BaseRepo
 from src.schemas.category import NewCategorySch, UpdateCategorySch
-from src.setttings import S3_BUCKET, FILE_PATH_TMP
 from src.setttings import logger
 
 
 class CategoryRepo(BaseRepo):
     def __init__(self):
         super().__init__("categories")
-        self.file_path_tmp = f"{FILE_PATH_TMP}{self.file_name}"
-        self.s3_client = S3Client(S3_BUCKET)
-        self.product_data = []
 
     def add_new(self, category: NewCategorySch) -> int:
         """
@@ -29,7 +24,7 @@ class CategoryRepo(BaseRepo):
         category_dict = category.model_dump()
 
         # save
-        self.upload_data(category.id, category_dict)
+        self.upload_data(category_dict)
         logger.info(f"Added new category name {category.name}")
         return category.id
 
@@ -45,7 +40,7 @@ class CategoryRepo(BaseRepo):
             raise AlreadyExist(f"Name {category.name} already exist")
 
         updated_data = {"id": category.id, "name": category.name, "parent_id": category.parent_id}
-        self.upload_data(category.id, updated_data)
+        self.upload_data(updated_data)
         logger.info(f"Updated {category.name}")
 
         return category.id
