@@ -78,6 +78,20 @@
         "tags": ["Product"],
         "parameters" : [
           {
+            "name" : "categoryId",
+            "in" : "query",
+            "schema" : {
+              "type" : "number"
+            }
+          },
+          {
+            "name" : "name",
+            "in" : "query",
+            "schema" : {
+              "type" : "string"
+            }
+          },
+          {
             "name" : "limit",
             "in" : "query",
             "schema" : {
@@ -190,6 +204,9 @@
           },
           "price": {
             "type": "number"
+          },
+          "categoryId": {
+            "type": "number"
           }
         }
       },
@@ -200,6 +217,9 @@
             "type": "string"
           },
           "price": {
+            "type": "number"
+          },
+          "categoryId": {
             "type": "number"
           }
         }

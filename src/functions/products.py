@@ -69,13 +69,32 @@ if __name__ == "__main__":
     #     "resource": "/products/init",
     #     "method": "POST"
     # }
+    # event = {
+    #     "resource": Routes.Products.REF_PRODUCTS,
+    #     "headers": {'content-type': ""},
+    #     "httpMethod": HTTPMethods.GET,
+    #     "pathParameters": {"categoryId": 1},
+    #     # "body": json.dumps({"name": "Cau Yonex", "categoryId": 1}),
+    # }
+    # rs = lambda_handler(event, None)
+    # body_rs = json.loads(rs["body"])
+    # print(json.dumps(body_rs, indent=4))
+
+    import base64
+
+    with open("resource/products/vot-cau-long-yonex-nanoflare-junior-cyan-chinh-hang_1737405462.webp", "rb") as img_file:
+        encoded_string = base64.b64encode(img_file.read()).decode('utf-8')
+
+    # print(encoded_string)
     event = {
-        "resource": Routes.Products.REF_PRODUCTS,
-        "headers": {'content-type': ""},
-        "httpMethod": HTTPMethods.GET,
-        "pathParameters": {"categoryId": 1},
-        # "body": json.dumps({"name": "Cau Yonex", "categoryId": 1}),
+        "resource": Routes.Products.REF_PRODUCT_UPLOAD_IMAGE,
+        "headers": {'content-type': "multipart/form-data"},
+        "httpMethod": HTTPMethods.POST,
+        "pathParameters": {"productId": 7},
+        "body": json.dumps(encoded_string),
     }
     rs = lambda_handler(event, None)
     body_rs = json.loads(rs["body"])
     print(json.dumps(body_rs, indent=4))
+
+

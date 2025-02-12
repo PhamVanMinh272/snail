@@ -112,3 +112,4 @@ class ProductService(BaseService):
 
         # upload image
         img_repo.upload_image(kwargs.get("file"), img_name)
+        return {"id": item_id}
