@@ -7,3 +7,17 @@ class ImagesTable(BaseModel):
     name: str
     parent_id: int
     parent_type: int
+
+
+class ProductTable(BaseModel):
+    id: int
+    name: str
+    price: int
+    category_id: int
+
+
+class CategoryTable(BaseModel):
+    id: int
+    name: str
+    parent_id: Optional[int] = Field(default=None)
+

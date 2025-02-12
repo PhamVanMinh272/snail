@@ -1,11 +1,12 @@
 import logging
-import uuid
+from datetime import datetime
 
-from src.common.exceptions import FileS3NotFound, NotFound
+from src.common.exceptions import FileS3NotFound, NotFound, InvalidData
 from src.common.utils import timer
+from src.data_repo.category import CategoryRepo
 from src.data_repo.product import ProductRepo
 from src.data_repo.image import ImageRepo
-from src.schemas.product import NewProductSch, UpdateProductSch, PathProductSch, UploadImgSch
+from src.schemas.product import NewProductSch, UpdateProductSch, PathProductSch, UploadImgSch, SearchSch
 from src.schemas.image import NewImageSch
 from src.services.general import BaseService
 
@@ -22,7 +23,11 @@ class ProductService(BaseService):
         """
         Get all products list
         """
-        data = ProductRepo().get_list()
+
+        # params
+        search_model = SearchSch(**kwargs)
+
+        data = ProductRepo().search_list(search_model)
         all_img = ImageRepo().get_list()
         img_dict = {}
         for i in all_img:
@@ -56,6 +61,13 @@ class ProductService(BaseService):
         logger.info("Creating product ...")
         new_product = NewProductSch(**kwargs)
         product_repo = ProductRepo()
+
+        # check category exist
+        category_repo = CategoryRepo()
+        category = category_repo.get_detail_by_id(new_product.category_id)
+        if not category:
+            raise InvalidData(f"Category {new_product.category_id} doesn't exist")
+
         product_id = product_repo.add_new(new_product)
         return {"id": product_id}
 
@@ -68,6 +80,13 @@ class ProductService(BaseService):
         logger.info("Updating product ...")
         update_product = UpdateProductSch(**kwargs)
         product_repo = ProductRepo()
+
+        # check category exist
+        category_repo = CategoryRepo()
+        category = category_repo.get_detail_by_id(update_product.category_id)
+        if not category:
+            raise InvalidData(f"Category {update_product.category_id} doesn't exist")
+
         product_id = product_repo.update_data(update_product)
         if not product_id:
             logger.info(f"Not found product {update_product.id}")
@@ -82,7 +101,7 @@ class ProductService(BaseService):
         new_upload = UploadImgSch(**kwargs)
 
         # update data
-        img_name = f"{uuid.uuid4()}.jpg"
+        img_name = f"product_{new_upload.parent_id}_{datetime.utcnow().strftime(format='%Y-%m-%dT%H:%M:%SZ')}.jpg"
         img_repo = ImageRepo()
         new_img = NewImageSch(
             name=img_name,

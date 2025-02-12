@@ -1,5 +1,4 @@
 from pydantic import BaseModel, Field, BeforeValidator
-from setuptools.command.alias import alias
 from typing_extensions import Annotated, Optional
 from src.common.enum import ColumnLabel
 
@@ -12,6 +11,7 @@ class NewProductSch(BaseModel):
     id: Optional[int] = Field(default=None, alias="id")
     name: Annotated[str, BeforeValidator(strip_str)] = Field(min_length=1)
     price: int
+    category_id: int = Field(alias=ColumnLabel.Category.CATEGORY_ID)
 
 
 class PathProductSch(BaseModel):
@@ -29,5 +29,5 @@ class UploadImgSch(BaseModel):
 
 
 class SearchSch(BaseModel):
-    category_id: Optional[list[int]] = Field(default=None)
-    name: Optional[str] = Field(default=None)
+    category_id: Optional[int] = Field(default=None, alias=ColumnLabel.Category.CATEGORY_ID)
+    name: Annotated[Optional[str], BeforeValidator(strip_str)] = Field(default=None)

@@ -1,13 +1,12 @@
 import logging
-from copy import deepcopy
 
-import botocore
 
 from src.common.exceptions import AlreadyExist
 from src.common.s3_client import S3Client
 from src.common.utils import DictObj
 from src.data_repo.general import BaseRepo
-from src.schemas.product import NewProductSch, UpdateProductSch
+from src.schemas.product import NewProductSch, UpdateProductSch, SearchSch
+from src.schemas.db_file_models.models import ProductTable
 from src.setttings import S3_BUCKET, FILE_PATH_TMP
 
 logger = logging.getLogger(__name__)
@@ -20,6 +19,31 @@ class ProductRepo(BaseRepo):
         self.file_path_tmp = f"{FILE_PATH_TMP}{self.file_name}"
         self.s3_client = S3Client(S3_BUCKET)
         self.product_data = []
+
+
+    def search_list(self, search: SearchSch) -> list:
+        data_list = self.get_list()
+        response = []
+
+        search_fields = {}
+        search_dumps = search.model_dump()
+        for key, value in search_dumps.items():
+            if search_dumps[key]:
+                search_fields.update({key: value})
+
+        for i in data_list:
+            pass_filter = True
+            if search.category_id:
+                if i.category_id != search.category_id:
+                    pass_filter = False
+            if search.name:
+                if search.name not in i.name:
+                    pass_filter = False
+
+            if pass_filter:
+                response.append(i)
+
+        return response
 
     def add_new(self, product: NewProductSch) -> int:
         """
@@ -52,7 +76,7 @@ class ProductRepo(BaseRepo):
         if self.check_exist_by_name(product.name, product.id):
             raise AlreadyExist(f"Name {product.name} already exist")
 
-        updated_data = {"id": product.id, "name": product.name, "price": product.price}
+        updated_data = ProductTable(**product.model_dump()).model_dump()
         self.upload_data(updated_data)
         logger.info(f"Updated {product.name}")
 
