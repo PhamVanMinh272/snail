@@ -62,5 +62,3 @@ class CategoryService(BaseService):
 
     def delete(self, **kwargs) -> dict:
         pass
-
-

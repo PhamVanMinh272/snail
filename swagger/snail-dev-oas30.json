@@ -241,6 +241,9 @@
           },
           "categoryId": {
             "type": "number"
+          },
+          "brandId": {
+            "type": "number"
           }
         }
     },

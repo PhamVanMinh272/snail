@@ -71,5 +71,3 @@ class ImageService(BaseService):
 
     def delete(self, **kwargs) -> dict:
         pass
-
-

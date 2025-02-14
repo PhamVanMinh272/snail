@@ -20,7 +20,7 @@ def lambda_handler(event, context):
     }
     post_routes = {
         Routes.Products.REF_PRODUCTS: product_service.create,
-        Routes.Products.REF_PRODUCT_UPLOAD_IMAGE: product_service.upload_img
+        Routes.Products.REF_PRODUCT_UPLOAD_IMAGE: product_service.upload_img,
     }
 
     put_routes = {Routes.Products.REF_PRODUCT_ID: product_service.update}
@@ -40,8 +40,10 @@ def lambda_handler(event, context):
         event.get("queryStringParameters") if event.get("queryStringParameters") else {}
     )
     body = event.get("body", "{}") if event.get("body") else "{}"
-    content_type = event["headers"].get('content-type') or event["headers"].get('Content-Type')
-    if content_type and 'multipart/form-data' in content_type:
+    content_type = event["headers"].get("content-type") or event["headers"].get(
+        "Content-Type"
+    )
+    if content_type and "multipart/form-data" in content_type:
         """Upload image"""
         body = {"file": event.get("body", "{}").encode("utf-8")}
     else:
@@ -77,13 +79,16 @@ if __name__ == "__main__":
 
     import base64
 
-    with open("resource/products/vot-cau-long-yonex-arcsaber-2-feel-black-green-chinh-hang_1731868152.webp", "rb") as img_file:
-        encoded_string = base64.b64encode(img_file.read()).decode('utf-8')
+    with open(
+        "resource/products/vot-cau-long-yonex-arcsaber-2-feel-black-green-chinh-hang_1731868152.webp",
+        "rb",
+    ) as img_file:
+        encoded_string = base64.b64encode(img_file.read()).decode("utf-8")
 
     # print(encoded_string)
     event = {
         "resource": Routes.Products.REF_PRODUCT_UPLOAD_IMAGE,
-        "headers": {'content-type': "multipart/form-data"},
+        "headers": {"content-type": "multipart/form-data"},
         "httpMethod": HTTPMethods.POST,
         "pathParameters": {"productId": 12},
         "body": json.dumps(encoded_string),
@@ -91,5 +96,3 @@ if __name__ == "__main__":
     rs = lambda_handler(event, None)
     body_rs = json.loads(rs["body"])
     print(json.dumps(body_rs, indent=4))
-
-

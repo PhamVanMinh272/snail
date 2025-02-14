@@ -14,6 +14,7 @@ class ColumnLabel:
 
     class Brand:
         BRAND_ID = "brandId"
+        BRAND_IDS = "brandIds"
 
 
 class Routes:
@@ -34,6 +35,7 @@ class Routes:
     class Brands:
         REF_BRAND_ID = "/brands/{brandId}"
         REF_BRAND = "/brands"
+
 
 class HTTPMethods:
     GET = "GET"

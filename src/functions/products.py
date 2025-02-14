@@ -18,11 +18,11 @@ def lambda_handler(event, context):
     get_routes = {
         Routes.Products.REF_PRODUCTS: product_service.get_list,
         Routes.Products.REF_PRODUCT_ID: product_service.get_detail_by_id,
-        Routes.Products.REF_PRODUCTS_BRANDS: product_service.get_brands
+        Routes.Products.REF_PRODUCTS_BRANDS: product_service.get_brands,
     }
     post_routes = {
         Routes.Products.REF_PRODUCTS: product_service.create,
-        Routes.Products.REF_PRODUCT_UPLOAD_IMAGE: product_service.upload_img
+        Routes.Products.REF_PRODUCT_UPLOAD_IMAGE: product_service.upload_img,
     }
 
     put_routes = {Routes.Products.REF_PRODUCT_ID: product_service.update}
@@ -42,8 +42,10 @@ def lambda_handler(event, context):
         event.get("queryStringParameters") if event.get("queryStringParameters") else {}
     )
     body = event.get("body", "{}") if event.get("body") else "{}"
-    content_type = event["headers"].get('content-type') or event["headers"].get('Content-Type')
-    if content_type and 'multipart/form-data' in content_type:
+    content_type = event["headers"].get("content-type") or event["headers"].get(
+        "Content-Type"
+    )
+    if content_type and "multipart/form-data" in content_type:
         """Upload image"""
         body = {"file": event.get("body", "{}").encode("utf-8")}
     else:
@@ -62,15 +64,12 @@ def lambda_handler(event, context):
 
 
 if __name__ == "__main__":
+    event = {"resource": "/products/init", "method": "POST"}
     event = {
-        "resource": "/products/init",
-        "method": "POST"
-    }
-    event = {
-        "resource": Routes.Products.REF_PRODUCTS_BRANDS,
-        "headers": {'content-type': ""},
+        "resource": Routes.Products.REF_PRODUCT_ID,
+        "headers": {"content-type": ""},
         "httpMethod": HTTPMethods.GET,
-        "pathParameters": {"categoryId": 1},
+        "pathParameters": {"productId": 1},
         # "body": json.dumps({"name": "Cau Yonex", "categoryId": 1}),
     }
     rs = lambda_handler(event, None)

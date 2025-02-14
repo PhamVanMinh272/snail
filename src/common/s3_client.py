@@ -37,8 +37,4 @@ class S3Client:
         image_bytes = base64.b64decode(body)
         # image_bytes = io.BytesIO(image_bytes)
         # image_bytes = body
-        self.s3.put_object(
-            Body=image_bytes,
-            Bucket=self.bucket_name,
-            Key=object_name
-        )
+        self.s3.put_object(Body=image_bytes, Bucket=self.bucket_name, Key=object_name)

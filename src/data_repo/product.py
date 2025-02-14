@@ -20,7 +20,6 @@ class ProductRepo(BaseRepo):
         self.s3_client = S3Client(S3_BUCKET)
         self.product_data = []
 
-
     def search_list(self, search: SearchSch) -> list:
         data_list = self.get_list()
         response = []
@@ -39,7 +38,7 @@ class ProductRepo(BaseRepo):
             if search.name:
                 if search.name.lower() not in i.name.lower():
                     pass_filter = False
-            if search.min_price !=0 or search.max_price != 10000000:
+            if search.min_price != 0 or search.max_price != 10000000:
                 if not search.max_price >= i.price >= search.min_price:
                     pass_filter = False
 

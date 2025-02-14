@@ -1,11 +1,16 @@
 import logging
 from datetime import datetime
-from encodings.utf_7 import encode, decode
 
 from src.common.exceptions import FileS3NotFound, NotFound, InvalidData
 from src.common.utils import timer
 from src.data_repo import CategoryRepo, ProductRepo, ImageRepo, BrandRepo
-from src.schemas.product import NewProductSch, UpdateProductSch, PathProductSch, UploadImgSch, SearchSch
+from src.schemas.product import (
+    NewProductSch,
+    UpdateProductSch,
+    PathProductSch,
+    UploadImgSch,
+    SearchSch,
+)
 from src.schemas.image import NewImageSch
 from src.services.general import BaseService
 
@@ -27,17 +32,21 @@ class ProductService(BaseService):
         search_model = SearchSch(**kwargs)
 
         data = ProductRepo().search_list(search_model)
-        all_img = ImageRepo().get_list()
-        img_dict = {}
-        for i in all_img:
-            img_dict.update({
-                i.parent_id: {
-                    "id": i.id,
-                    "name": i.name
-                }
-            })
+
+        all_img_df = ImageRepo().get_data_as_df()
+        brands_df = BrandRepo().get_data_as_df()
         response = [
-            {"id": i.id, "name": i.name, "price": i.price, "image": img_dict.get(i.id)} for i in data]
+            {
+                "id": i.id,
+                "name": i.name,
+                "price": i.price,
+                "brand": brands_df[brands_df["id"] == i.brand_id].iloc[0].to_dict(),
+                "image": all_img_df[all_img_df["parent_id"] == i.id]
+                .sort_values(by=["id"], ascending=False)
+                .to_dict(orient="records"),
+            }
+            for i in data
+        ]
         return response
 
     def get_detail_by_id(self, **kwargs) -> dict:
@@ -48,9 +57,19 @@ class ProductService(BaseService):
         product_id = PathProductSch(**kwargs).id
         product_repo = ProductRepo()
         data = product_repo.get_detail_by_id(product_id)
+        category_df = CategoryRepo().get_data_as_df()
+        all_img_df = ImageRepo().get_data_as_df()
+        brands_df = BrandRepo().get_data_as_df()
         if not data:
             raise NotFound(f"Not found product {product_id}")
-        return {"id": data.id, "name": data.name, "price": data.price, "category_id": data.category_id, "brand_id": data.brand_id}
+        return {
+            "id": data.id,
+            "name": data.name,
+            "price": data.price,
+            "images": all_img_df[(all_img_df["parent_id"] == data.id) & (all_img_df["parent_type"]==1)].to_dict(orient="records"),
+            "brand": brands_df[brands_df["id"]==data.brand_id].iloc[0].to_dict(),
+            "category": category_df[category_df["id"]==data.category_id].iloc[0].to_dict()
+        }
 
     @timer
     def create(self, **kwargs) -> dict:
@@ -105,7 +124,7 @@ class ProductService(BaseService):
         new_img = NewImageSch(
             name=img_name,
             parent_id=new_upload.parent_id,
-            parent_type=new_upload.parent_type
+            parent_type=new_upload.parent_type,
         )
         item_id = img_repo.add_new(new_img)
 
@@ -117,10 +136,6 @@ class ProductService(BaseService):
         brands_df = BrandRepo().get_data_as_df()
         # products_df = ProductRepo().get_data_as_df()
 
-
-
         # products_df.merge(brands_df, how="left", left_on="brand_id", right_on="id")
 
         return brands_df.to_dict(orient="records")
-
-

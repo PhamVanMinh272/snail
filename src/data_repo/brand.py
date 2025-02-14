@@ -9,4 +9,3 @@ from src.setttings import logger
 class BrandRepo(BaseRepo):
     def __init__(self):
         super().__init__("brands")
-

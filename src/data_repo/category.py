@@ -39,7 +39,11 @@ class CategoryRepo(BaseRepo):
         if self.check_exist_by_name(category.name, category.id):
             raise AlreadyExist(f"Name {category.name} already exist")
 
-        updated_data = {"id": category.id, "name": category.name, "parent_id": category.parent_id}
+        updated_data = {
+            "id": category.id,
+            "name": category.name,
+            "parent_id": category.parent_id,
+        }
         self.upload_data(updated_data)
         logger.info(f"Updated {category.name}")
 

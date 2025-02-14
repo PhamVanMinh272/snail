@@ -7,7 +7,6 @@ from src.setttings import S3_BUCKET, FILE_PATH_TMP
 from src.common.utils import DictObj
 
 
-
 class BaseRepo:
     def __init__(self, table_name: str):
         self.table_name = table_name
