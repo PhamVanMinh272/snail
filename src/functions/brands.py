@@ -1,4 +1,3 @@
-import base64
 import json
 
 from src.common.api_utils import exception_handler
@@ -18,7 +17,6 @@ def lambda_handler(event, context):
     get_routes = {
         Routes.Products.REF_PRODUCTS: product_service.get_list,
         Routes.Products.REF_PRODUCT_ID: product_service.get_detail_by_id,
-        Routes.Products.REF_PRODUCTS_BRANDS: product_service.get_brands
     }
     post_routes = {
         Routes.Products.REF_PRODUCTS: product_service.create,
@@ -62,36 +60,36 @@ def lambda_handler(event, context):
 
 
 if __name__ == "__main__":
+    # event = {
+    #     "resource": "/products/init",
+    #     "method": "POST"
+    # }
+    # event = {
+    #     "resource": Routes.Products.REF_PRODUCTS,
+    #     "headers": {'content-type': ""},
+    #     "httpMethod": HTTPMethods.GET,
+    #     "pathParameters": {"categoryId": 1},
+    #     # "body": json.dumps({"name": "Cau Yonex", "categoryId": 1}),
+    # }
+    # rs = lambda_handler(event, None)
+    # body_rs = json.loads(rs["body"])
+    # print(json.dumps(body_rs, indent=4))
+
+    import base64
+
+    with open("resource/products/vot-cau-long-yonex-arcsaber-2-feel-black-green-chinh-hang_1731868152.webp", "rb") as img_file:
+        encoded_string = base64.b64encode(img_file.read()).decode('utf-8')
+
+    # print(encoded_string)
     event = {
-        "resource": "/products/init",
-        "method": "POST"
-    }
-    event = {
-        "resource": Routes.Products.REF_PRODUCTS_BRANDS,
-        "headers": {'content-type': ""},
-        "httpMethod": HTTPMethods.GET,
-        "pathParameters": {"categoryId": 1},
-        # "body": json.dumps({"name": "Cau Yonex", "categoryId": 1}),
+        "resource": Routes.Products.REF_PRODUCT_UPLOAD_IMAGE,
+        "headers": {'content-type': "multipart/form-data"},
+        "httpMethod": HTTPMethods.POST,
+        "pathParameters": {"productId": 12},
+        "body": json.dumps(encoded_string),
     }
     rs = lambda_handler(event, None)
     body_rs = json.loads(rs["body"])
     print(json.dumps(body_rs, indent=4))
 
-    # import base64
-    #
-    # with open("resource/products/vot-cau-long-yonex-arcsaber-2-feel-black-green-chinh-hang_1731868152.webp", "rb") as img_file:
-    #     encoded_string = base64.b64encode(img_file.read()).decode('utf-8')
-    #
-    # # print(encoded_string)
-    # event = {
-    #     "resource": Routes.Products.REF_PRODUCT_UPLOAD_IMAGE,
-    #     "headers": {'content-type': "multipart/form-data"},
-    #     "httpMethod": HTTPMethods.POST,
-    #     "pathParameters": {"productId": 12},
-    #     "body": json.dumps(encoded_string),
-    # }
-    # rs = lambda_handler(event, None)
-    # body_rs = json.loads(rs["body"])
-    # print(json.dumps(body_rs, indent=4))
-    #
-    #
+

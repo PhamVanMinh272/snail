@@ -37,7 +37,10 @@ class ProductRepo(BaseRepo):
                 if i.category_id != search.category_id:
                     pass_filter = False
             if search.name:
-                if search.name not in i.name:
+                if search.name.lower() not in i.name.lower():
+                    pass_filter = False
+            if search.min_price !=0 or search.max_price != 10000000:
+                if not search.max_price >= i.price >= search.min_price:
                     pass_filter = False
 
             if pass_filter:

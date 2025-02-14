@@ -1,4 +1,5 @@
 import copy
+import pandas as pd
 from src.setttings import logger
 import botocore
 from src.common.s3_client import S3Client
@@ -49,6 +50,11 @@ class BaseRepo:
         except botocore.exceptions.ClientError as e:
             return []
             # raise FileS3NotFound(f"Not found files {self.file_name} in S3")
+
+    def get_data_as_df(self):
+        """Return data as a Dataframe"""
+        self.get_data()
+        return pd.DataFrame(self.data.values())
 
     def get_detail_by_id(self, item_id: int):
         """

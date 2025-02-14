@@ -7,9 +7,10 @@ def make_success_response(body: dict, status_code: int = 200):
         "headers": {
             "Access-Control-Allow-Headers": "Content-Type",
             "Access-Control-Allow-Origin": "*",  ## Allow from anywhere
-            "Access-Control-Allow-Methods": "*",  ## Allow only GET request
+            "Access-Control-Allow-Methods": "*",  ## Allow only GET request,
+            "Content-Type": "application/json; charset=utf-8"
         },
-        "body": json.dumps(body),
+        "body": json.dumps(body, ensure_ascii=False),
     }
 
 

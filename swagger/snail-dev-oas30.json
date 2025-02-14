@@ -92,6 +92,20 @@
             }
           },
           {
+            "name" : "minPrice",
+            "in" : "query",
+            "schema" : {
+              "type" : "number"
+            }
+          },
+          {
+            "name" : "maxPrice",
+            "in" : "query",
+            "schema" : {
+              "type" : "number"
+            }
+          },
+          {
             "name" : "limit",
             "in" : "query",
             "schema" : {
@@ -119,6 +133,12 @@
             }
           }
         },
+        "responses": {}
+      }
+    },
+    "/products/brands" : {
+      "get" : {
+        "tags": ["Product"],
         "responses": {}
       }
     },

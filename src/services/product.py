@@ -1,11 +1,10 @@
 import logging
 from datetime import datetime
+from encodings.utf_7 import encode, decode
 
 from src.common.exceptions import FileS3NotFound, NotFound, InvalidData
 from src.common.utils import timer
-from src.data_repo.category import CategoryRepo
-from src.data_repo.product import ProductRepo
-from src.data_repo.image import ImageRepo
+from src.data_repo import CategoryRepo, ProductRepo, ImageRepo, BrandRepo
 from src.schemas.product import NewProductSch, UpdateProductSch, PathProductSch, UploadImgSch, SearchSch
 from src.schemas.image import NewImageSch
 from src.services.general import BaseService
@@ -51,7 +50,7 @@ class ProductService(BaseService):
         data = product_repo.get_detail_by_id(product_id)
         if not data:
             raise NotFound(f"Not found product {product_id}")
-        return {"id": data.id, "name": data.name, "price": data.price}
+        return {"id": data.id, "name": data.name, "price": data.price, "category_id": data.category_id, "brand_id": data.brand_id}
 
     @timer
     def create(self, **kwargs) -> dict:
@@ -113,3 +112,15 @@ class ProductService(BaseService):
         # upload image
         img_repo.upload_image(kwargs.get("file"), img_name)
         return {"id": item_id}
+
+    def get_brands(self, **kwargs):
+        brands_df = BrandRepo().get_data_as_df()
+        # products_df = ProductRepo().get_data_as_df()
+
+
+
+        # products_df.merge(brands_df, how="left", left_on="brand_id", right_on="id")
+
+        return brands_df.to_dict(orient="records")
+
+

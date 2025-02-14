@@ -31,3 +31,5 @@ class UploadImgSch(BaseModel):
 class SearchSch(BaseModel):
     category_id: Optional[int] = Field(default=None, alias=ColumnLabel.Category.CATEGORY_ID)
     name: Annotated[Optional[str], BeforeValidator(strip_str)] = Field(default=None)
+    min_price: Optional[int] = Field(default=0, alias=ColumnLabel.Product.MIN_PRICE)
+    max_price: Optional[int] = Field(default=10000000, alias=ColumnLabel.Product.MAX_PRICE)

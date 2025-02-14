@@ -17,7 +17,8 @@ class S3Client:
         :param object_name: file path
         """
         data = self.s3.get_object(Bucket=self.bucket_name, Key=object_name)
-        data = json.load(data.get("Body"))
+        data = data["Body"].read().decode("utf-8")
+        data = json.loads(data)
         data = data.get("data")
         return data
 

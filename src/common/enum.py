@@ -2,11 +2,18 @@ class ColumnLabel:
     class Product:
         PRODUCT_ID = "productId"
 
+        # query params
+        MIN_PRICE = "minPrice"
+        MAX_PRICE = "maxPrice"
+
     class Category:
         CATEGORY_ID = "categoryId"
 
     class Image:
         IMAGE_ID = "imageId"
+
+    class Brand:
+        BRAND_ID = "brandId"
 
 
 class Routes:
@@ -14,6 +21,7 @@ class Routes:
         REF_PRODUCT_ID = "/products/{productId}"
         REF_PRODUCT_UPLOAD_IMAGE = "/products/{productId}/upload-img"
         REF_PRODUCTS = "/products"
+        REF_PRODUCTS_BRANDS = "/products/brands"
 
     class Categories:
         REF_CATEGORY_ID = "/categories/{categoryId}"
@@ -23,6 +31,9 @@ class Routes:
         REF_IMAGE_ID = "/images/{imageId}"
         REF_IMAGE = "/images"
 
+    class Brands:
+        REF_BRAND_ID = "/brands/{brandId}"
+        REF_BRAND = "/brands"
 
 class HTTPMethods:
     GET = "GET"
