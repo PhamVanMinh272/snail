@@ -1,5 +1,7 @@
 import logging
 
+from jmespath import search
+
 from src.common.exceptions import FileS3NotFound, NotFound
 from src.common.utils import timer
 from src.data_repo.category import CategoryRepo
@@ -15,12 +17,18 @@ class CategoryService(BaseService):
         super().__init__()
 
     @timer
-    def get_list(self, **kwargs) -> list:
+    def get_list(self, **kwargs) -> dict:
         """
         Get all products list
         """
-        data = CategoryRepo().get_list()
-        return [{"id": i.id, "name": i.name, "parent": i.parent_id} for i in data]
+        category_repo = CategoryRepo()
+        data = category_repo.get_list()
+        return {
+            "data": [{"id": i.id, "name": i.name, "parent": i.parent_id} for i in data],
+            "count": len(category_repo.get_list()),
+            "limit": 20,
+            "page": 0,
+        }
 
     def get_detail_by_id(self, **kwargs) -> dict:
         """
@@ -32,7 +40,7 @@ class CategoryService(BaseService):
         data = category_repo.get_detail_by_id(item_id)
         if not data:
             raise NotFound(f"Not found category {item_id}")
-        return {"id": data.id, "name": data.name, "parent": data.parent_id}
+        return {"data": {"id": data.id, "name": data.name, "parent": data.parent_id}}
 
     @timer
     def create(self, **kwargs) -> dict:
@@ -43,7 +51,7 @@ class CategoryService(BaseService):
         new_item = NewCategorySch(**kwargs)
         category_repo = CategoryRepo()
         item_id = category_repo.add_new(new_item)
-        return {"id": item_id}
+        return {"data": {"id": item_id}}
 
     def update(self, **kwargs) -> dict:
         """
@@ -58,7 +66,7 @@ class CategoryService(BaseService):
         if not item_id:
             logger.info(f"Not found category {update_category.id}")
             raise NotFound(f"Not found category {update_category.id}")
-        return {"id": item_id}
+        return {"data": {"id": item_id}}
 
     def delete(self, **kwargs) -> dict:
         pass

@@ -23,7 +23,7 @@ class ProductService(BaseService):
         super().__init__()
 
     @timer
-    def get_list(self, **kwargs) -> list:
+    def get_list(self, **kwargs) -> dict:
         """
         Get all products list
         """
@@ -31,11 +31,12 @@ class ProductService(BaseService):
         # params
         search_model = SearchSch(**kwargs)
 
-        data = ProductRepo().search_list(search_model)
+        product_repo = ProductRepo()
+        data = product_repo.search_list(search_model)
 
         all_img_df = ImageRepo().get_data_as_df()
         brands_df = BrandRepo().get_data_as_df()
-        response = [
+        data_return = [
             {
                 "id": i.id,
                 "name": i.name,
@@ -47,6 +48,13 @@ class ProductService(BaseService):
             }
             for i in data
         ]
+
+        response = {
+            "data": data_return,
+            "count": len(product_repo.get_list()),
+            "limit": search_model.limit,
+            "page": search_model.page,
+        }
         return response
 
     def get_detail_by_id(self, **kwargs) -> dict:
@@ -63,12 +71,19 @@ class ProductService(BaseService):
         if not data:
             raise NotFound(f"Not found product {product_id}")
         return {
-            "id": data.id,
-            "name": data.name,
-            "price": data.price,
-            "images": all_img_df[(all_img_df["parent_id"] == data.id) & (all_img_df["parent_type"]==1)].to_dict(orient="records"),
-            "brand": brands_df[brands_df["id"]==data.brand_id].iloc[0].to_dict(),
-            "category": category_df[category_df["id"]==data.category_id].iloc[0].to_dict()
+            "data": {
+                "id": data.id,
+                "name": data.name,
+                "price": data.price,
+                "images": all_img_df[
+                    (all_img_df["parent_id"] == data.id)
+                    & (all_img_df["parent_type"] == 1)
+                ].to_dict(orient="records"),
+                "brand": brands_df[brands_df["id"] == data.brand_id].iloc[0].to_dict(),
+                "category": category_df[category_df["id"] == data.category_id]
+                .iloc[0]
+                .to_dict(),
+            }
         }
 
     @timer
@@ -87,7 +102,7 @@ class ProductService(BaseService):
             raise InvalidData(f"Category {new_product.category_id} doesn't exist")
 
         product_id = product_repo.add_new(new_product)
-        return {"id": product_id}
+        return {"data": {"id": product_id}}
 
     def update(self, **kwargs) -> dict:
         """
@@ -109,7 +124,7 @@ class ProductService(BaseService):
         if not product_id:
             logger.info(f"Not found product {update_product.id}")
             raise NotFound(f"Not found product {update_product.id}")
-        return {"id": product_id}
+        return {"data": {"id": product_id}}
 
     def delete(self, **kwargs) -> dict:
         pass
@@ -130,7 +145,7 @@ class ProductService(BaseService):
 
         # upload image
         img_repo.upload_image(kwargs.get("file"), img_name)
-        return {"id": item_id}
+        return {"data": {"id": item_id}}
 
     def get_brands(self, **kwargs):
         brands_df = BrandRepo().get_data_as_df()
@@ -138,4 +153,4 @@ class ProductService(BaseService):
 
         # products_df.merge(brands_df, how="left", left_on="brand_id", right_on="id")
 
-        return brands_df.to_dict(orient="records")
+        return {"data": brands_df.to_dict(orient="records")}

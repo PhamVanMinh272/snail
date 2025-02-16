@@ -1,4 +1,3 @@
-import base64
 import json
 
 from src.common.api_utils import exception_handler

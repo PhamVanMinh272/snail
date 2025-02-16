@@ -11,7 +11,7 @@ def exception_handler(func):
     def wrapper(event, context):
         try:
             data = func(event, context)
-            return make_success_response({"data": data})
+            return make_success_response(data)
         except (AlreadyExist, InvalidData) as e:
             logger.exception(e)
             return make_error_response(str(e), 400)
