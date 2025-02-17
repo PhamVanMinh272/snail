@@ -109,13 +109,13 @@
             "name" : "limit",
             "in" : "query",
             "schema" : {
-              "type" : "string"
+              "type" : "number"
             }
           }, {
           "name" : "page",
           "in" : "query",
           "schema" : {
-            "type" : "string"
+            "type" : "number"
           }
         }
         ],
@@ -212,8 +212,39 @@
         },
         "responses": {}
       }
-    }
-  },
+    },
+    "/players" : {
+      "get": {
+        "tags": [
+          "Players"
+        ],
+        "parameters": [
+          {
+            "name": "matchDate",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {}
+      }
+      }
+    },
   "components" : {
     "schemas": {
       "postProduct": {

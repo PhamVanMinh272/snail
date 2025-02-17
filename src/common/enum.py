@@ -16,6 +16,9 @@ class ColumnLabel:
         BRAND_ID = "brandId"
         BRAND_IDS = "brandIds"
 
+    class Player:
+        MATCH_DATE = "matchDate"
+
 
 class Routes:
     class Products:
@@ -35,6 +38,9 @@ class Routes:
     class Brands:
         REF_BRAND_ID = "/brands/{brandId}"
         REF_BRAND = "/brands"
+
+    class Players:
+        REF_PLAYER = "/players"
 
 
 class HTTPMethods:

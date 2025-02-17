@@ -2,12 +2,9 @@ import logging
 
 
 from src.common.exceptions import AlreadyExist
-from src.common.s3_client import S3Client
-from src.common.utils import DictObj
 from src.data_repo.general import BaseRepo
 from src.schemas.product import NewProductSch, UpdateProductSch, SearchSch
 from src.schemas.db_file_models.models import ProductTable
-from src.setttings import S3_BUCKET, FILE_PATH_TMP
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)
@@ -16,8 +13,6 @@ logging.basicConfig(level=logging.INFO)
 class ProductRepo(BaseRepo):
     def __init__(self):
         super().__init__("products")
-        self.file_path_tmp = f"{FILE_PATH_TMP}{self.file_name}"
-        self.s3_client = S3Client(S3_BUCKET)
         self.product_data = []
 
     def search_list(self, search: SearchSch) -> list:
