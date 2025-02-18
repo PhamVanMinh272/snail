@@ -16,6 +16,11 @@ class ColumnLabel:
         BRAND_ID = "brandId"
         BRAND_IDS = "brandIds"
 
+    class Match:
+        MATCH_DATE = "matchDate"
+        COURT = "court"
+        PLAYERS = "players"
+
     class Player:
         MATCH_DATE = "matchDate"
 

@@ -8,3 +8,7 @@ class SearchSch(BaseModel):
  # match_date: Optional[date] = Field(default=None, alias=ColumnLabel.Player.MATCH_DATE)
  limit: Optional[int] = Field(default=5, ge=1)
  page: Optional[int] = Field(default=1, ge=1)
+
+class SearchMatchDetailsSch(BaseModel):
+    match_date: Optional[date] = Field(default=None, alias=ColumnLabel.Player.MATCH_DATE)
+

@@ -166,7 +166,7 @@ Resources:
       Architectures:
         - x86_64
       Events:
-        getmatches:
+        getMatches:
           Type: Api
           Properties:
             Path: /matches
