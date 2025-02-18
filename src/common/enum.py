@@ -42,6 +42,9 @@ class Routes:
     class Players:
         REF_PLAYER = "/players"
 
+    class Matches:
+        REF_MATCH = "/matches"
+
 
 class HTTPMethods:
     GET = "GET"

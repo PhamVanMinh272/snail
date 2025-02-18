@@ -213,6 +213,37 @@
         "responses": {}
       }
     },
+    "/matches" : {
+      "get": {
+        "tags": [
+          "Matches"
+        ],
+        "parameters": [
+          {
+            "name": "matchDate",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {}
+      }
+      },
     "/players" : {
       "get": {
         "tags": [

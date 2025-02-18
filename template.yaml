@@ -156,6 +156,23 @@ Resources:
             Method: put
             RestApiId: !Ref ApiDeployment
 
+  MatchesFunction:
+    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Properties:
+      Role: !GetAtt ProductsFunctionRole.Arn
+      CodeUri: ./
+      Handler: src/functions/matches.lambda_handler
+      Runtime: python3.11
+      Architectures:
+        - x86_64
+      Events:
+        getmatches:
+          Type: Api
+          Properties:
+            Path: /matches
+            Method: get
+            RestApiId: !Ref ApiDeployment
+
   PlayersFunction:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:
