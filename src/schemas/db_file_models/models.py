@@ -1,6 +1,7 @@
-from pydantic import BaseModel, Field, BeforeValidator
+from pydantic import BaseModel, Field, BeforeValidator, field_serializer
 from typing_extensions import Annotated, Optional
 from src.common.enum import ColumnLabel
+from datetime import date
 
 
 class ImagesTable(BaseModel):
@@ -22,3 +23,12 @@ class CategoryTable(BaseModel):
     id: int
     name: str
     parent_id: Optional[int] = Field(default=None)
+
+
+class MatchTable(BaseModel):
+    id: int
+    match_date: date
+
+    @field_serializer('match_date')
+    def serialize_match_date(self, match_date: date, _info):
+        return match_date.strftime("%Y-%m-%d")

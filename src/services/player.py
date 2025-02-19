@@ -25,21 +25,20 @@ class PlayerService(BaseService):
         search_model = SearchSch(**kwargs)
         logger.info(f"Search by: {search_model.model_dump()}")
 
-        match_player_repo = MatchPlayerRepo()
-        match_player_data = match_player_repo.search_list(search_model)
-
         player_repo = PlayerRepo()
-        player_data = player_repo.get_data_as_df()
-        player_data.set_index("id")
+        player_df = player_repo.get_data_as_df()
 
         data_return = [
-            player_data.iloc[i["player_id"]].to_dict()
-            for i in match_player_data
+            {
+                "id": row["id"],
+                "name": row["name"]
+            }
+            for _, row in player_df.iterrows()
         ]
 
         response = {
             "data": data_return,
-            "count": len(match_player_repo.get_list()),
+            "count": len(player_repo.get_list()),
             "limit": search_model.limit,
             "page": search_model.page,
         }

@@ -17,9 +17,13 @@ def lambda_handler(event, context):
     get_routes = {
         Routes.Matches.REF_MATCH: service.get_list
     }
+    post_routes = {
+        Routes.Matches.REF_MATCH: service.create
+    }
 
     verb_paths = {
-        HTTPMethods.GET: get_routes
+        HTTPMethods.GET: get_routes,
+        HTTPMethods.POST: post_routes
     }
 
     paths = verb_paths.get(verb)
@@ -47,7 +51,7 @@ if __name__ == "__main__":
         "resource": Routes.Matches.REF_MATCH,
         "httpMethod": HTTPMethods.GET,
         "pathParameters": {"categoryId": "5"},
-        "queryStringParameters": {"matchDate": "2025-02-18"},
+        "queryStringParameters": {"matchDate": "2025-03-11"},
         "body": json.dumps({"name": "Ong Cau long", "parent": None}),
     }
     rs = lambda_handler(event, None)

@@ -1,7 +1,9 @@
 import pandas as pd
 from datetime import date
-from src.schemas.match import SearchSch
+from src.schemas.match import SearchSch, NewMatchSch
 from src.data_repo.general import BaseRepo
+from src.schemas.db_file_models.models import MatchTable
+from src.setttings import logger
 
 class MatchRepo(BaseRepo):
     def __init__(self):
@@ -18,3 +20,20 @@ class MatchRepo(BaseRepo):
 
     def get_list(self):
         return self.data.values()
+
+    def add_new(self, match: NewMatchSch) -> int:
+        """
+        Add new match
+        :param match:
+        :return:
+        """
+        # new data
+        match.id = self.get_new_id()
+        match_dict = match.model_dump()
+
+        match_row = MatchTable(**match_dict)
+
+        # save
+        self.upload_data(match_row.model_dump())
+        logger.info(f"Added new product name {match_row.match_date}")
+        return match_row.id

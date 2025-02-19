@@ -12,3 +12,8 @@ class SearchSch(BaseModel):
 class SearchMatchDetailsSch(BaseModel):
     match_date: Optional[date] = Field(default=None, alias=ColumnLabel.Player.MATCH_DATE)
 
+
+class NewMatchSch(BaseModel):
+    id: Optional[int] = Field(default=None)
+    match_date: date = Field(alias=ColumnLabel.Player.MATCH_DATE)
+    court: str
