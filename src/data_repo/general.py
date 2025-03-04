@@ -1,9 +1,9 @@
 import copy
 import pandas as pd
-from src.setttings import logger
+from src.settings import logger
 import botocore
 from src.common.s3_client import S3Client
-from src.setttings import S3_BUCKET, FILE_PATH_TMP
+from src.settings import S3_BUCKET, FILE_PATH_TMP
 from src.common.utils import DictObj
 
 
@@ -94,6 +94,21 @@ class BaseRepo:
         # update new data to file data
         data_dict = self.get_data()
         data_dict[str(key_id)] = single_data
+        file_data = self.set_file_data(data_dict)
+
+        # upload to s3
+        logger.info("Uploading data ...")
+        self.s3_client.put_object_content(self.file_name, file_data)
+
+    def upload_list_data(self, list_data: list[dict]):
+        data_dict = self.get_data()
+        for single_data in list_data:
+            key_id = single_data.get("id")
+            if not key_id:
+                key_id = self.get_new_id()
+                single_data["id"] = key_id
+            # key_id = single_data.get("id") or self.get_new_id()
+            data_dict[str(key_id)] = single_data
         file_data = self.set_file_data(data_dict)
 
         # upload to s3

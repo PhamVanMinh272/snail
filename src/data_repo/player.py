@@ -3,7 +3,7 @@ import pandas as pd
 
 from src.data_repo.general import BaseRepo
 from src.schemas.player import SearchSch
-from src.setttings import logger
+from src.settings import logger
 
 
 class PlayerRepo(BaseRepo):

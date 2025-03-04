@@ -242,8 +242,47 @@
           }
         ],
         "responses": {}
-      }
       },
+      "post" : {
+        "tags": ["Matches"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/postMatch"
+              }
+            }
+          }
+        },
+        "responses": {}
+      }
+    },
+    "/matches/{matchId}/register" : {
+      "post" : {
+        "tags": ["Matches"],
+        "parameters": [
+          {
+            "name": "matchId",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/matchRegister"
+              }
+            }
+          }
+        },
+        "responses": {}
+      }
+    },
     "/players" : {
       "get": {
         "tags": [
@@ -337,6 +376,23 @@
           "file": {
             "type": "string",
             "format": "binary"
+          }
+        }
+      },
+      "postMatch": {
+        "type": "object",
+        "properties": {
+          "match_date": {
+            "type": "string"
+          }
+        }
+      },
+      "matchRegister": {
+        "type": "object",
+        "properties": {
+          "playerIds": {
+            "type": "array",
+            "items": "integer"
           }
         }
       }

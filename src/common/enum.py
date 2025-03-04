@@ -20,6 +20,9 @@ class ColumnLabel:
         MATCH_DATE = "matchDate"
         COURT = "court"
         PLAYERS = "players"
+        MATCH_ID = "matchId"
+        PLAYER_IDS = "playerIds"
+        IN_COMING_ONLY = "inComingOnly"
 
     class Player:
         MATCH_DATE = "matchDate"
@@ -49,6 +52,7 @@ class Routes:
 
     class Matches:
         REF_MATCH = "/matches"
+        REF_MATCH_REGISTER = "/matches/{matchId}/register"
 
 
 class HTTPMethods:

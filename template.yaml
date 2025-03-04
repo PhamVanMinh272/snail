@@ -9,6 +9,7 @@ Globals:
   Function:
     Timeout: 20
     MemorySize: 128
+    Runtime: python3.11
     Environment:
       Variables:
         ENV: aws
@@ -63,7 +64,6 @@ Resources:
     Properties:
       CodeUri: ./swagger
       Handler: main.lambda_handler
-      Runtime: python3.11
       Architectures:
         - x86_64
       Events:
@@ -80,7 +80,6 @@ Resources:
       Role: !GetAtt ProductsFunctionRole.Arn
       CodeUri: ./
       Handler: src/functions/products.lambda_handler
-      Runtime: python3.11
       Architectures:
       - x86_64
       Events:
@@ -127,7 +126,6 @@ Resources:
       Role: !GetAtt ProductsFunctionRole.Arn
       CodeUri: ./
       Handler: src/functions/categories.lambda_handler
-      Runtime: python3.11
       Architectures:
         - x86_64
       Events:
@@ -162,7 +160,6 @@ Resources:
       Role: !GetAtt ProductsFunctionRole.Arn
       CodeUri: ./
       Handler: src/functions/matches.lambda_handler
-      Runtime: python3.11
       Architectures:
         - x86_64
       Events:
@@ -172,6 +169,18 @@ Resources:
             Path: /matches
             Method: get
             RestApiId: !Ref ApiDeployment
+        postMatch:
+          Type: Api
+          Properties:
+            Path: /matches
+            Method: post
+            RestApiId: !Ref ApiDeployment
+        postMatchRegister:
+          Type: Api
+          Properties:
+            Path: /matches/{matchId}/register
+            Method: post
+            RestApiId: !Ref ApiDeployment
 
   PlayersFunction:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
@@ -179,7 +188,6 @@ Resources:
       Role: !GetAtt ProductsFunctionRole.Arn
       CodeUri: ./
       Handler: src/functions/players.lambda_handler
-      Runtime: python3.11
       Architectures:
         - x86_64
       Events:

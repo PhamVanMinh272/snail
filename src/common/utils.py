@@ -1,6 +1,6 @@
 import time
 
-from src.setttings import logger
+from src.settings import logger
 
 
 def timer(func):

@@ -3,7 +3,7 @@ import json
 from src.common.api_utils import exception_handler
 from src.common.enum import Routes, HTTPMethods
 from src.services.product import ProductService
-from src.setttings import logger
+from src.settings import logger
 
 
 @exception_handler

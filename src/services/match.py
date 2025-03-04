@@ -1,6 +1,6 @@
 import logging
 from datetime import datetime
-from multiprocessing import Pool
+from threading import Thread
 from time import sleep
 
 
@@ -9,7 +9,7 @@ from src.common.exceptions import NotFound, InvalidData, AlreadyExist
 from src.common.utils import timer
 from src.data_repo import MatchRepo, MatchPlayerRepo, PlayerRepo
 from src.services.general import BaseService
-from src.schemas.match import SearchSch, SearchMatchDetailsSch, NewMatchSch
+from src.schemas.match import SearchSch, SearchMatchDetailsSch, NewMatchSch, MatchRegisterSch
 from src.schemas.player import SearchSch as PlayersSearchSch
 
 logger = logging.getLogger(__name__)
@@ -25,19 +25,21 @@ class MatchService(BaseService):
         """
         Get all players list
         """
-        pool = Pool(processes=3)
 
         # params
         search_model = SearchSch(**kwargs)
         logger.info(f"Search by: {search_model.model_dump()}")
 
+        # get files async
         match_repo = MatchRepo()
+        Thread(target = match_repo.get_data).start()
         match_data = match_repo.search_list(search_model)
 
         match_player_repo = MatchPlayerRepo()
-        pool.map_async(match_player_repo.get_data, ())
+        Thread(target=match_player_repo.get_data).start()
+
         player_repo = PlayerRepo()
-        pool.map_async(player_repo.get_data, ())
+        Thread(target=player_repo.get_data).start()
 
         for match in match_data:
             # get match details
@@ -89,3 +91,15 @@ class MatchService(BaseService):
 
     def delete(self, **kwargs) -> dict:
         pass
+
+    def register(self, **kwargs) -> dict:
+        register_params = MatchRegisterSch(**kwargs)
+
+        match = MatchRepo().get_detail_by_id(register_params.match_id)
+        if not match:
+            raise NotFound(f"Not found match {register_params.match_id}")
+
+        match_player_repo = MatchPlayerRepo()
+        match_player_repo.add_new_list(match.match_date, register_params.player_ids)
+        return {}
+

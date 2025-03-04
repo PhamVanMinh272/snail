@@ -1,7 +1,7 @@
 from src.common.exceptions import AlreadyExist
 from src.data_repo.general import BaseRepo
 from src.schemas.category import NewCategorySch, UpdateCategorySch
-from src.setttings import logger
+from src.settings import logger
 
 
 class CategoryRepo(BaseRepo):

@@ -3,7 +3,7 @@ from datetime import date
 from src.schemas.match import SearchSch, NewMatchSch
 from src.data_repo.general import BaseRepo
 from src.schemas.db_file_models.models import MatchTable
-from src.setttings import logger
+from src.settings import logger
 
 class MatchRepo(BaseRepo):
     def __init__(self):
@@ -12,7 +12,8 @@ class MatchRepo(BaseRepo):
     def search_list(self, search: SearchSch):
         matches_df = self.get_data_as_df()
         matches_df['match_date'] = pd.to_datetime(matches_df['match_date']).dt.date
-        matches_df = matches_df[matches_df["match_date"]>= date.today()]
+        if search.in_coming_only:
+            matches_df = matches_df[matches_df["match_date"]>= date.today()]
         matches_df.sort_values("match_date", inplace=True)
         matches_df = matches_df.head(search.limit)
         matches_df['match_date'] = matches_df['match_date'].astype(str)

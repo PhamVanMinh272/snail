@@ -3,7 +3,7 @@ import json
 from src.common.api_utils import exception_handler
 from src.common.enum import Routes, HTTPMethods
 from src.services.match import MatchService
-from src.setttings import logger
+from src.settings import logger
 
 
 @exception_handler
@@ -18,7 +18,8 @@ def lambda_handler(event, context):
         Routes.Matches.REF_MATCH: service.get_list
     }
     post_routes = {
-        Routes.Matches.REF_MATCH: service.create
+        Routes.Matches.REF_MATCH: service.create,
+        Routes.Matches.REF_MATCH_REGISTER: service.register
     }
 
     verb_paths = {
@@ -50,9 +51,9 @@ if __name__ == "__main__":
     event = {
         "resource": Routes.Matches.REF_MATCH,
         "httpMethod": HTTPMethods.GET,
-        "pathParameters": {"categoryId": "5"},
-        "queryStringParameters": {"matchDate": "2025-03-11"},
-        "body": json.dumps({"name": "Ong Cau long", "parent": None}),
+        "pathParameters": {"matchId": "3"},
+        "queryStringParameters": {"inComingOnly": False},
+        "body": json.dumps({"playerIds": [2]}),
     }
     rs = lambda_handler(event, None)
     body_rs = json.loads(rs["body"])
