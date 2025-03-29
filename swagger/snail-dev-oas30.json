@@ -327,7 +327,10 @@
             "type": "number"
           },
           "categoryId": {
-            "type": "number"
+            "type": "integer"
+          },
+          "brandId": {
+            "type": "integer"
           }
         }
       },
