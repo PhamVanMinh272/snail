@@ -142,6 +142,41 @@
         "responses": {}
       }
     },
+    "/categories" : {
+      "get" : {
+        "tags": ["Category"],
+        "parameters" : [
+          {
+            "name" : "limit",
+            "in" : "query",
+            "schema" : {
+              "type" : "string"
+            }
+          }, {
+          "name" : "page",
+          "in" : "query",
+          "schema" : {
+            "type" : "string"
+          }
+        }
+        ],
+        "responses": {}
+      },
+      "post" : {
+        "tags": ["Category"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/postCategory"
+              }
+            }
+          }
+        },
+        "responses": {}
+      }
+    },
     "/categories/{id}" : {
       "get" : {
         "tags": ["Category"],
@@ -178,38 +213,17 @@
         "responses": {}
       }
     },
-    "/categories" : {
+    "/categories/{id}/filters" : {
       "get" : {
         "tags": ["Category"],
-        "parameters" : [
-          {
-            "name" : "limit",
-            "in" : "query",
-            "schema" : {
-              "type" : "string"
-            }
-          }, {
-          "name" : "page",
-          "in" : "query",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
           "schema" : {
             "type" : "string"
           }
-        }
-        ],
-        "responses": {}
-      },
-      "post" : {
-        "tags": ["Category"],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/postCategory"
-              }
-            }
-          }
-        },
+        } ],
         "responses": {}
       }
     },

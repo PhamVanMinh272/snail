@@ -38,6 +38,7 @@ class Routes:
     class Categories:
         REF_CATEGORY_ID = "/categories/{categoryId}"
         REF_CATEGORY = "/categories"
+        REF_CATEGORY_FILTERS = "/categories/{categoryId}/filters"
 
     class Images:
         REF_IMAGE_ID = "/images/{imageId}"

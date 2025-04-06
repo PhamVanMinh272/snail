@@ -153,6 +153,12 @@ Resources:
             Path: /categories/{categoryId}
             Method: put
             RestApiId: !Ref ApiDeployment
+        getCategoryFilters:
+          Type: Api
+          Properties:
+            Path: /categories/{categoryId}/filters
+            Method: get
+            RestApiId: !Ref ApiDeployment
 
   MatchesFunction:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction

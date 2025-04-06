@@ -17,6 +17,7 @@ def lambda_handler(event, context):
     get_routes = {
         Routes.Categories.REF_CATEGORY: category_service.get_list,
         Routes.Categories.REF_CATEGORY_ID: category_service.get_detail_by_id,
+        Routes.Categories.REF_CATEGORY_FILTERS: category_service.get_filters
     }
     post_routes = {
         Routes.Categories.REF_CATEGORY: category_service.create,
@@ -56,9 +57,9 @@ if __name__ == "__main__":
     #     "method": "POST"
     # }
     event = {
-        "resource": Routes.Categories.REF_CATEGORY,
-        "httpMethod": HTTPMethods.POST,
-        "pathParameters": {"categoryId": "5"},
+        "resource": Routes.Categories.REF_CATEGORY_FILTERS,
+        "httpMethod": HTTPMethods.GET,
+        "pathParameters": {"categoryId": "1"},
         "body": json.dumps({"name": "Ong Cau long", "parent": None}),
     }
     rs = lambda_handler(event, None)

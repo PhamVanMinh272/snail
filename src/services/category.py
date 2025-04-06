@@ -1,11 +1,15 @@
 import logging
 
+import pandas as pd
 from jmespath import search
 
 from src.common.exceptions import FileS3NotFound, NotFound
 from src.common.utils import timer
 from src.data_repo.category import CategoryRepo
+from src.data_repo.filter import FilterRepo
+from src.data_repo.category_filters import CategoryFilterRepo
 from src.schemas.category import NewCategorySch, UpdateCategorySch, PathCategorySch
+from src.schemas.filter import FilterResponseSch
 from src.services.general import BaseService
 
 logger = logging.getLogger(__name__)
@@ -70,3 +74,21 @@ class CategoryService(BaseService):
 
     def delete(self, **kwargs) -> dict:
         pass
+
+    @staticmethod
+    def get_filters(**kwargs) -> dict:
+        """Get list filters of a category"""
+        category_id = PathCategorySch(**kwargs).id
+
+        filters_df = FilterRepo().get_data_as_df()
+        category_filters_df = CategoryFilterRepo().get_data_as_df()
+
+        # filter by category id
+        category_filters_df = category_filters_df[category_filters_df["category_id"]==category_id]
+        filters_df: pd.DataFrame = filters_df[filters_df["id"].isin(category_filters_df["filter_id"].to_list())]
+
+        response = [
+            FilterResponseSch(**row).model_dump()
+            for row in filters_df.to_dict(orient="records")
+        ]
+        return {"data": response}
