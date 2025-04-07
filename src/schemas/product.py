@@ -1,5 +1,6 @@
 from pydantic import BaseModel, Field, BeforeValidator
 from typing_extensions import Annotated, Optional
+
 from src.common.enum import ColumnLabel
 
 

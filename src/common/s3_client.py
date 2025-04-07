@@ -1,6 +1,5 @@
 import base64
 import json
-import io
 
 import boto3
 

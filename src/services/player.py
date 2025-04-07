@@ -1,11 +1,9 @@
 import logging
-from datetime import datetime
 
-from src.common.exceptions import NotFound, InvalidData
 from src.common.utils import timer
-from src.data_repo import PlayerRepo, MatchPlayerRepo
-from src.services.general import BaseService
+from src.data_repo import PlayerRepo
 from src.schemas.player import SearchSch
+from src.services.general import BaseService
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)

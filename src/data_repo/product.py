@@ -1,10 +1,9 @@
 import logging
 
-
 from src.common.exceptions import AlreadyExist
 from src.data_repo.general import BaseRepo
-from src.schemas.product import NewProductSch, UpdateProductSch, SearchSch
 from src.schemas.db_file_models.models import ProductTable
+from src.schemas.product import NewProductSch, UpdateProductSch, SearchSch
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)

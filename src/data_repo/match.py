@@ -1,9 +1,12 @@
-import pandas as pd
 from datetime import date
-from src.schemas.match import SearchSch, NewMatchSch
+
+import pandas as pd
+
 from src.data_repo.general import BaseRepo
 from src.schemas.db_file_models.models import MatchTable
+from src.schemas.match import SearchSch, NewMatchSch
 from src.settings import logger
+
 
 class MatchRepo(BaseRepo):
     def __init__(self):

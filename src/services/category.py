@@ -1,13 +1,12 @@
 import logging
 
 import pandas as pd
-from jmespath import search
 
-from src.common.exceptions import FileS3NotFound, NotFound
+from src.common.exceptions import NotFound
 from src.common.utils import timer
 from src.data_repo.category import CategoryRepo
-from src.data_repo.filter import FilterRepo
 from src.data_repo.category_filters import CategoryFilterRepo
+from src.data_repo.filter import FilterRepo
 from src.schemas.category import NewCategorySch, UpdateCategorySch, PathCategorySch
 from src.schemas.filter import FilterResponseSch
 from src.services.general import BaseService

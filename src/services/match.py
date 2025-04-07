@@ -1,16 +1,12 @@
 import logging
-from datetime import datetime
 from threading import Thread
-from time import sleep
-
 
 from src.common.enum import ColumnLabel
-from src.common.exceptions import NotFound, InvalidData, AlreadyExist
+from src.common.exceptions import NotFound, AlreadyExist
 from src.common.utils import timer
 from src.data_repo import MatchRepo, MatchPlayerRepo, PlayerRepo
-from src.services.general import BaseService
 from src.schemas.match import SearchSch, SearchMatchDetailsSch, NewMatchSch, MatchRegisterSch
-from src.schemas.player import SearchSch as PlayersSearchSch
+from src.services.general import BaseService
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)

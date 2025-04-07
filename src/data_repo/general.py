@@ -1,10 +1,12 @@
 import copy
-import pandas as pd
-from src.settings import logger
+
 import botocore
+import pandas as pd
+
 from src.common.s3_client import S3Client
-from src.settings import S3_BUCKET, FILE_PATH_TMP
 from src.common.utils import DictObj
+from src.settings import S3_BUCKET, FILE_PATH_TMP
+from src.settings import logger
 
 
 class BaseRepo:

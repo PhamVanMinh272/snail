@@ -1,9 +1,10 @@
 import logging
 from datetime import datetime
 
-from src.common.exceptions import FileS3NotFound, NotFound, InvalidData
+from src.common.exceptions import NotFound, InvalidData
 from src.common.utils import timer
 from src.data_repo import CategoryRepo, ProductRepo, ImageRepo, BrandRepo
+from src.schemas.image import NewImageSch
 from src.schemas.product import (
     NewProductSch,
     UpdateProductSch,
@@ -11,7 +12,6 @@ from src.schemas.product import (
     UploadImgSch,
     SearchSch,
 )
-from src.schemas.image import NewImageSch
 from src.services.general import BaseService
 
 logger = logging.getLogger(__name__)

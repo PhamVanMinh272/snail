@@ -1,8 +1,9 @@
-from pydantic import BaseModel, Field, BeforeValidator, field_serializer
-from typing_extensions import Annotated, Optional
-from src.common.enum import ColumnLabel
-from src.common.config import DATE_STR_FORMAT
 from datetime import date
+
+from pydantic import BaseModel, Field, field_serializer
+from typing_extensions import Optional
+
+from src.common.config import DATE_STR_FORMAT
 
 
 class ImagesTable(BaseModel):

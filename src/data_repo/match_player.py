@@ -1,12 +1,9 @@
-import pandas as pd
-from datetime import date
-
 from src.common.exceptions import AlreadyExist
-from src.schemas.match import SearchMatchDetailsSch, NewMatchPlayerSch
 from src.data_repo.general import BaseRepo
-from src.common.config import DATE_STR_FORMAT
 from src.schemas.db_file_models.models import MatchPlayerTable
+from src.schemas.match import SearchMatchDetailsSch
 from src.settings import logger
+
 
 class MatchPlayerRepo(BaseRepo):
     def __init__(self):

@@ -1,8 +1,8 @@
-import base64
+import logging
 import logging
 import uuid
 
-from src.common.exceptions import FileS3NotFound, NotFound
+from src.common.exceptions import NotFound
 from src.common.utils import timer
 from src.data_repo.image import ImageRepo
 from src.schemas.image import NewImageSch, UpdateImageSch, PathImageSch
