@@ -106,6 +106,14 @@
             }
           },
           {
+            "name" : "sortPrice",
+            "in" : "query",
+            "schema" : {
+              "type" : "str",
+              "enum": ["desc", "asc"]
+            }
+          },
+          {
             "name" : "limit",
             "in" : "query",
             "schema" : {
