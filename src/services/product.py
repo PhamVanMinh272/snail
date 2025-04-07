@@ -32,21 +32,21 @@ class ProductService(BaseService):
         search_model = SearchSch(**kwargs)
 
         product_repo = ProductRepo()
-        data = product_repo.search_list(search_model)
+        products = product_repo.search_list(search_model)
 
         all_img_df = ImageRepo().get_data_as_df()
         brands_df = BrandRepo().get_data_as_df()
         data_return = [
             {
-                "id": i.id,
-                "name": i.name,
-                "price": i.price,
-                "brand": brands_df[brands_df["id"] == i.brand_id].iloc[0].to_dict(),
-                "image": all_img_df[all_img_df["parent_id"] == i.id]
+                "id": i["id"],
+                "name": i["name"],
+                "price": i["price"],
+                "brand": brands_df[brands_df["id"] == i["brand_id"]].iloc[0].to_dict(),
+                "image": all_img_df[all_img_df["parent_id"] == i["id"]]
                 .sort_values(by=["id"], ascending=False)
                 .to_dict(orient="records"),
             }
-            for i in data
+            for i in products
         ]
 
         response = {

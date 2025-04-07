@@ -7,13 +7,16 @@ from src.common.enum import ColumnLabel
 
 
 class SearchSch(BaseModel):
- # match_date: Optional[date] = Field(default=None, alias=ColumnLabel.Player.MATCH_DATE)
- in_coming_only: bool = Field(default=True, alias=ColumnLabel.Match.IN_COMING_ONLY)
- limit: Optional[int] = Field(default=5, ge=1)
- page: Optional[int] = Field(default=1, ge=1)
+    # match_date: Optional[date] = Field(default=None, alias=ColumnLabel.Player.MATCH_DATE)
+    in_coming_only: bool = Field(default=True, alias=ColumnLabel.Match.IN_COMING_ONLY)
+    limit: Optional[int] = Field(default=5, ge=1)
+    page: Optional[int] = Field(default=1, ge=1)
+
 
 class SearchMatchDetailsSch(BaseModel):
-    match_date: Optional[date] = Field(default=None, alias=ColumnLabel.Player.MATCH_DATE)
+    match_date: Optional[date] = Field(
+        default=None, alias=ColumnLabel.Player.MATCH_DATE
+    )
 
 
 class NewMatchSch(BaseModel):

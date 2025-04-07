@@ -12,7 +12,10 @@ class MatchPlayerRepo(BaseRepo):
     def search_list(self, search: SearchMatchDetailsSch):
         players_df = self.get_data_as_df()
         if search.match_date:
-            players_df = players_df[players_df["match_date"] == search.match_date.strftime(format="%Y-%m-%d")]
+            players_df = players_df[
+                players_df["match_date"]
+                == search.match_date.strftime(format="%Y-%m-%d")
+            ]
         return players_df.to_dict(orient="records")
 
     def get_list(self):
@@ -26,7 +29,11 @@ class MatchPlayerRepo(BaseRepo):
             key = f"{match_date}-{i}"
             if self.data.get(key):
                 raise AlreadyExist(f"Player {i} already register")
-            new_data.append(MatchPlayerTable(id=key, player_id=i, match_date=match_date).model_dump())
+            new_data.append(
+                MatchPlayerTable(
+                    id=key, player_id=i, match_date=match_date
+                ).model_dump()
+            )
 
         # save
         self.upload_list_data(new_data)

@@ -14,13 +14,9 @@ def lambda_handler(event, context):
     logger.info(f"{verb} {resource}")
 
     service = PlayerService()
-    get_routes = {
-        Routes.Players.REF_PLAYER: service.get_list
-    }
+    get_routes = {Routes.Players.REF_PLAYER: service.get_list}
 
-    verb_paths = {
-        HTTPMethods.GET: get_routes
-    }
+    verb_paths = {HTTPMethods.GET: get_routes}
 
     paths = verb_paths.get(verb)
     func = paths.get(resource)

@@ -14,18 +14,13 @@ def lambda_handler(event, context):
     logger.info(f"{verb} {resource}")
 
     service = MatchService()
-    get_routes = {
-        Routes.Matches.REF_MATCH: service.get_list
-    }
+    get_routes = {Routes.Matches.REF_MATCH: service.get_list}
     post_routes = {
         Routes.Matches.REF_MATCH: service.create,
-        Routes.Matches.REF_MATCH_REGISTER: service.register
+        Routes.Matches.REF_MATCH_REGISTER: service.register,
     }
 
-    verb_paths = {
-        HTTPMethods.GET: get_routes,
-        HTTPMethods.POST: post_routes
-    }
+    verb_paths = {HTTPMethods.GET: get_routes, HTTPMethods.POST: post_routes}
 
     paths = verb_paths.get(verb)
     func = paths.get(resource)

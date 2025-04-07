@@ -63,12 +63,13 @@ def lambda_handler(event, context):
 
 
 if __name__ == "__main__":
-    event = {"resource": "/products/init", "method": "POST"}
+    event = {"resource": "/products/init", "method": "GET"}
     event = {
-        "resource": Routes.Products.REF_PRODUCT_ID,
+        "resource": Routes.Products.REF_PRODUCTS,
         "headers": {"content-type": ""},
         "httpMethod": HTTPMethods.GET,
         "pathParameters": {"productId": 1},
+        "queryStringParameters": {"categoryId": 1, "sortPrice": "asc"},
         # "body": json.dumps({"name": "Cau Yonex", "categoryId": 1}),
     }
     rs = lambda_handler(event, None)

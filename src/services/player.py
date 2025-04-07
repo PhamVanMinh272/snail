@@ -27,11 +27,7 @@ class PlayerService(BaseService):
         player_df = player_repo.get_data_as_df()
 
         data_return = [
-            {
-                "id": row["id"],
-                "name": row["name"]
-            }
-            for _, row in player_df.iterrows()
+            {"id": row["id"], "name": row["name"]} for _, row in player_df.iterrows()
         ]
 
         response = {

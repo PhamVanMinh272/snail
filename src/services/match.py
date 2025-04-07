@@ -5,7 +5,12 @@ from src.common.enum import ColumnLabel
 from src.common.exceptions import NotFound, AlreadyExist
 from src.common.utils import timer
 from src.data_repo import MatchRepo, MatchPlayerRepo, PlayerRepo
-from src.schemas.match import SearchSch, SearchMatchDetailsSch, NewMatchSch, MatchRegisterSch
+from src.schemas.match import (
+    SearchSch,
+    SearchMatchDetailsSch,
+    NewMatchSch,
+    MatchRegisterSch,
+)
 from src.services.general import BaseService
 
 logger = logging.getLogger(__name__)
@@ -28,7 +33,7 @@ class MatchService(BaseService):
 
         # get files async
         match_repo = MatchRepo()
-        Thread(target = match_repo.get_data).start()
+        Thread(target=match_repo.get_data).start()
         match_data = match_repo.search_list(search_model)
 
         match_player_repo = MatchPlayerRepo()
@@ -39,15 +44,16 @@ class MatchService(BaseService):
 
         for match in match_data:
             # get match details
-            search_details_model = SearchMatchDetailsSch(matchDate=match.get("match_date"))
+            search_details_model = SearchMatchDetailsSch(
+                matchDate=match.get("match_date")
+            )
             match_player_data = match_player_repo.search_list(search_details_model)
 
             player_data = player_repo.get_data_as_df()
             player_data.set_index("id", inplace=True)
 
             players = [
-                player_data.loc[i["player_id"]].to_dict()
-                for i in match_player_data
+                player_data.loc[i["player_id"]].to_dict() for i in match_player_data
             ]
             match.update({"players": players})
 
@@ -56,7 +62,7 @@ class MatchService(BaseService):
                 "id": match["id"],
                 ColumnLabel.Match.MATCH_DATE: match["match_date"],
                 ColumnLabel.Match.COURT: match["court"],
-                ColumnLabel.Match.PLAYERS: match["players"]
+                ColumnLabel.Match.PLAYERS: match["players"],
             }
             for match in match_data
         ]
@@ -75,12 +81,13 @@ class MatchService(BaseService):
         match_repo = MatchRepo()
 
         match_df = match_repo.get_data_as_df()
-        if not match_df[match_df["match_date"]==new_match_params.match_date.strftime("%Y-%m-%d")].empty:
+        if not match_df[
+            match_df["match_date"] == new_match_params.match_date.strftime("%Y-%m-%d")
+        ].empty:
             raise AlreadyExist(f"Already exist")
 
         new_match_id = match_repo.add_new(new_match_params)
         return {"data": {"id": new_match_id}}
-
 
     def update(self, **kwargs) -> dict:
         pass
@@ -98,4 +105,3 @@ class MatchService(BaseService):
         match_player_repo = MatchPlayerRepo()
         match_player_repo.add_new_list(match.match_date, register_params.player_ids)
         return {}
-

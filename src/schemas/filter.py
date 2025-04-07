@@ -4,7 +4,7 @@ from typing_extensions import Union
 
 class FilterValueResponseSch(BaseModel):
     id: int
-    name: Union[int|str]
+    name: Union[int | str]
 
 
 class FilterResponseSch(BaseModel):

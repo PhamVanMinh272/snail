@@ -17,7 +17,7 @@ def lambda_handler(event, context):
     get_routes = {
         Routes.Categories.REF_CATEGORY: category_service.get_list,
         Routes.Categories.REF_CATEGORY_ID: category_service.get_detail_by_id,
-        Routes.Categories.REF_CATEGORY_FILTERS: category_service.get_filters
+        Routes.Categories.REF_CATEGORY_FILTERS: category_service.get_filters,
     }
     post_routes = {
         Routes.Categories.REF_CATEGORY: category_service.create,

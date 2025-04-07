@@ -52,7 +52,7 @@ class BaseRepo:
             return []
             # raise FileS3NotFound(f"Not found files {self.file_name} in S3")
 
-    def get_data_as_df(self):
+    def get_data_as_df(self) -> pd.DataFrame:
         """Return data as a Dataframe"""
         self.get_data()
         return pd.DataFrame(self.data.values())

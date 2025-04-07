@@ -31,7 +31,7 @@ class MatchTable(BaseModel):
     id: int
     match_date: date
 
-    @field_serializer('match_date')
+    @field_serializer("match_date")
     def serialize_match_date(self, match_date: date, _info):
         return match_date.strftime(DATE_STR_FORMAT)
 
@@ -41,6 +41,6 @@ class MatchPlayerTable(BaseModel):
     player_id: int
     match_date: date
 
-    @field_serializer('match_date')
+    @field_serializer("match_date")
     def serialize_match_date(self, match_date: date, _info):
         return match_date.strftime(DATE_STR_FORMAT)

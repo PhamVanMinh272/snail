@@ -83,8 +83,12 @@ class CategoryService(BaseService):
         category_filters_df = CategoryFilterRepo().get_data_as_df()
 
         # filter by category id
-        category_filters_df = category_filters_df[category_filters_df["category_id"]==category_id]
-        filters_df: pd.DataFrame = filters_df[filters_df["id"].isin(category_filters_df["filter_id"].to_list())]
+        category_filters_df = category_filters_df[
+            category_filters_df["category_id"] == category_id
+        ]
+        filters_df: pd.DataFrame = filters_df[
+            filters_df["id"].isin(category_filters_df["filter_id"].to_list())
+        ]
 
         response = [
             FilterResponseSch(**row).model_dump()

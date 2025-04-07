@@ -6,4 +6,12 @@ from .match_player import MatchPlayerRepo
 from .player import PlayerRepo
 from .product import ProductRepo
 
-__all__ = ["BrandRepo", "ImageRepo", "CategoryRepo", "ProductRepo", "MatchRepo", "PlayerRepo", "MatchPlayerRepo"]
+__all__ = [
+    "BrandRepo",
+    "ImageRepo",
+    "CategoryRepo",
+    "ProductRepo",
+    "MatchRepo",
+    "PlayerRepo",
+    "MatchPlayerRepo",
+]

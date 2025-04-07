@@ -6,6 +6,8 @@ class ColumnLabel:
         MIN_PRICE = "minPrice"
         MAX_PRICE = "maxPrice"
 
+        SORT_PRICE = "sortPrice"
+
     class Category:
         CATEGORY_ID = "categoryId"
 
@@ -62,3 +64,8 @@ class HTTPMethods:
     PUT = "PUT"
     PATCH = "PATCH"
     DELETE = "DELETE"
+
+
+class SortDirections:
+    DESC = "desc"
+    ASC = "asc"

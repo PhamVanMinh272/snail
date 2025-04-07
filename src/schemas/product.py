@@ -1,7 +1,8 @@
 from pydantic import BaseModel, Field, BeforeValidator
-from typing_extensions import Annotated, Optional
+from typing_extensions import Annotated, Optional, Literal
 
-from src.common.enum import ColumnLabel
+from src.common.enum import ColumnLabel, SortDirections
+from src.schemas import SortChoices
 
 
 def strip_str(s: str):
@@ -43,6 +44,9 @@ class SearchSch(BaseModel):
     )
     max_price: Optional[int] = Field(
         default=10000000, alias=ColumnLabel.Product.MAX_PRICE
+    )
+    sort_price: Literal[SortDirections.ASC, SortDirections.DESC, None] = Field(
+        default=None, alias=ColumnLabel.Product.SORT_PRICE
     )
     limit: Optional[int] = Field(default=20, ge=1)
     page: Optional[int] = Field(default=1, ge=1)
