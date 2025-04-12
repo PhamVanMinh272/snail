@@ -59,6 +59,41 @@ Resources:
     Properties:
       StageName: dev
 
+  DefaultCachePolicy:
+    Type: AWS::CloudFront::CachePolicy
+    Properties:
+      CachePolicyConfig:
+        Name: DefaultCachePolicy
+        DefaultTTL: 3600
+        MinTTL: 0
+        MaxTTL: 86400
+        ParametersInCacheKeyAndForwardedToOrigin:
+          EnableAcceptEncodingGzip: true
+          HeadersConfig:
+            HeaderBehavior: none  # Or 'whitelist', and specify headers if needed
+          CookiesConfig:
+            CookieBehavior: none  # Or 'whitelist', and specify cookies if needed
+          QueryStringsConfig:
+            QueryStringBehavior: all  # Or 'whitelist', and specify query strings
+
+  MyCloudFrontDistribution:
+    Type: AWS::CloudFront::Distribution
+    Properties:
+      DistributionConfig:
+        Enabled: true  # Enabled should be defined here
+        Origins:
+          - DomainName: !Sub '${ApiDeployment}.execute-api.${AWS::Region}.amazonaws.com'
+            Id: ApiOrigin
+            CustomOriginConfig:
+              OriginProtocolPolicy: https-only
+        DefaultCacheBehavior:
+          TargetOriginId: ApiOrigin
+          ViewerProtocolPolicy: redirect-to-https
+          CachePolicyId: !Ref DefaultCachePolicy  # Replace with a valid Cache Policy ID
+          AllowedMethods:
+            - GET
+            - HEAD
+
   SwaggerFunction:
     Type: AWS::Serverless::Function
     Properties:
