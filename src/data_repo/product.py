@@ -36,6 +36,8 @@ class ProductRepo(BaseRepo):
             product_df = product_df[
                 product_df["price"].between(search.min_price, search.max_price)
             ]
+        if search.brand_ids:
+            product_df = product_df[product_df["brand_id"].isin(search.brand_ids)]
 
         # sort
         if search.sort_price:

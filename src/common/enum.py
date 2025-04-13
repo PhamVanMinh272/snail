@@ -1,6 +1,12 @@
 class ColumnLabel:
+    ID = 'id'
+    NAME = 'name'
+
     class Product:
         PRODUCT_ID = "productId"
+
+        PRICE = 'price'
+        IMAGES = 'images'
 
         # query params
         MIN_PRICE = "minPrice"
@@ -17,6 +23,8 @@ class ColumnLabel:
     class Brand:
         BRAND_ID = "brandId"
         BRAND_IDS = "brandIds"
+
+        BRAND = 'brand'
 
     class Match:
         MATCH_DATE = "matchDate"

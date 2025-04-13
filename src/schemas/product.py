@@ -1,8 +1,7 @@
-from pydantic import BaseModel, Field, BeforeValidator
+from pydantic import BaseModel, Field, BeforeValidator, ConfigDict
 from typing_extensions import Annotated, Optional, Literal
 
 from src.common.enum import ColumnLabel, SortDirections
-from src.schemas import SortChoices
 
 
 def strip_str(s: str):
@@ -50,3 +49,20 @@ class SearchSch(BaseModel):
     )
     limit: Optional[int] = Field(default=20, ge=1)
     page: Optional[int] = Field(default=1, ge=1)
+
+
+class BrandResponseSch(BaseModel):
+    id: int = Field(ColumnLabel.ID)
+    name: str = Field(ColumnLabel.NAME)
+
+
+class ProductResponseSch(BaseModel):
+    model_config = ConfigDict(populate_by_name=True)
+
+    id: int = Field(alias=ColumnLabel.ID)
+    name: str = Field(alias=ColumnLabel.NAME)
+    price: float = Field(alias=ColumnLabel.Product.PRICE)
+    brand: BrandResponseSch = Field(alias=ColumnLabel.Brand.BRAND)
+    image: list[dict] = Field(alias=ColumnLabel.Product.IMAGES)
+
+

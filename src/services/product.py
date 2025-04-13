@@ -11,6 +11,7 @@ from src.schemas.product import (
     PathProductSch,
     UploadImgSch,
     SearchSch,
+    ProductResponseSch,
 )
 from src.services.general import BaseService
 
@@ -37,21 +38,19 @@ class ProductService(BaseService):
         all_img_df = ImageRepo().get_data_as_df()
         brands_df = BrandRepo().get_data_as_df()
         data_return = [
-            {
-                "id": i["id"],
-                "name": i["name"],
-                "price": i["price"],
-                "brand": brands_df[brands_df["id"] == i["brand_id"]].iloc[0].to_dict(),
-                "image": all_img_df[all_img_df["parent_id"] == i["id"]]
+            ProductResponseSch(
+                **i,
+                brand=brands_df[brands_df["id"] == i["brand_id"]].iloc[0].to_dict(),
+                image=all_img_df[all_img_df["parent_id"] == i["id"]]
                 .sort_values(by=["id"], ascending=False)
                 .to_dict(orient="records"),
-            }
+            ).model_dump(by_alias=True)
             for i in products
         ]
 
         response = {
             "data": data_return,
-            "count": len(product_repo.get_list()),
+            "count": len(data_return),
             "limit": search_model.limit,
             "page": search_model.page,
         }

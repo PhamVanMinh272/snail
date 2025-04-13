@@ -70,7 +70,11 @@ if __name__ == "__main__":
         "httpMethod": HTTPMethods.GET,
         "pathParameters": {"productId": 1},
         "queryStringParameters": {"categoryId": 1, "sortPrice": "asc"},
-        # "body": json.dumps({"name": "Cau Yonex", "categoryId": 1}),
+        "body": json.dumps({
+            # "name": "Cau Yonex", "categoryId": 1
+            "brandIds": [2, 3]
+        }
+        ),
     }
     rs = lambda_handler(event, None)
     body_rs = json.loads(rs["body"])
