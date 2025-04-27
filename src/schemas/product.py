@@ -8,6 +8,17 @@ def strip_str(s: str):
     return s.strip()
 
 
+def parse_list_str_to_number(list_str: list[str]):
+    # Convert list of strings to list of integers
+    if isinstance(list_str, list):
+        try:
+            return [int(v) for v in list_str]
+        except ValueError:
+            raise ValueError("All brand_ids must be integers.")
+    return list_str
+
+
+
 class NewProductSch(BaseModel):
     id: Optional[int] = Field(default=None, alias="id")
     name: Annotated[str, BeforeValidator(strip_str)] = Field(min_length=1)
@@ -35,7 +46,7 @@ class SearchSch(BaseModel):
         default=None, alias=ColumnLabel.Category.CATEGORY_ID
     )
     name: Annotated[Optional[str], BeforeValidator(strip_str)] = Field(default=None)
-    brand_ids: Optional[list[int]] = Field(
+    brand_ids: Annotated[Optional[list[int]], BeforeValidator(parse_list_str_to_number)] = Field(
         default=[], alias=ColumnLabel.Brand.BRAND_IDS
     )
     min_price: Optional[int] = Field(

@@ -92,6 +92,16 @@
             }
           },
           {
+            "name": "brandIds",
+            "in": "query",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "number"
+              }
+            }
+          },
+          {
             "name" : "minPrice",
             "in" : "query",
             "schema" : {

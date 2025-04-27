@@ -37,7 +37,14 @@ def lambda_handler(event, context):
 
     # get params
     path_params = event.get("pathParameters") if event.get("pathParameters") else {}
-    query_params = (
+    query_params = {}
+    multi_query_params = (
+        event.get("multiValueQueryStringParameters")
+        if event.get("multiValueQueryStringParameters")
+        else {}
+    )
+    query_params.update(multi_query_params)
+    query_params.update(
         event.get("queryStringParameters") if event.get("queryStringParameters") else {}
     )
     body = event.get("body", "{}") if event.get("body") else "{}"
@@ -70,10 +77,11 @@ if __name__ == "__main__":
         "httpMethod": HTTPMethods.GET,
         "pathParameters": {"productId": 1},
         "queryStringParameters": {"categoryId": 1, "sortPrice": "asc"},
-        "body": json.dumps({
-            # "name": "Cau Yonex", "categoryId": 1
-            "brandIds": [2, 3]
-        }
+        "body": json.dumps(
+            {
+                # "name": "Cau Yonex", "categoryId": 1
+                "brandIds": ["2", "3"]
+            }
         ),
     }
     rs = lambda_handler(event, None)
