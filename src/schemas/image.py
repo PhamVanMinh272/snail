@@ -1,7 +1,8 @@
-from pydantic import BaseModel, Field, BeforeValidator
-from typing_extensions import Annotated, Optional
+from pydantic import BaseModel, Field, BeforeValidator, model_validator
+from typing_extensions import Annotated, Optional, Self
 
 from src.common.enum import ColumnLabel
+from src.settings import S3_BUCKET_IMAGES_URL
 
 
 def strip_str(s: str):
@@ -32,3 +33,8 @@ class ImagesResSch(BaseModel):
     id: int = Field()
     name: str = Field(default=None)
     url: str = Field(default=None)
+
+    @model_validator(mode="after")
+    def make_url(self) -> Self:
+        self.url = S3_BUCKET_IMAGES_URL + self.name
+        return self

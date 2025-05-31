@@ -1,5 +1,6 @@
 import logging
 from datetime import datetime
+from pandas import DataFrame
 
 from src.common.enum import ImageParentTypes
 from src.common.exceptions import NotFound, InvalidData
@@ -42,13 +43,22 @@ class ProductService(BaseService):
 
         all_img_df = ImageRepo().get_data_as_df()
         brands_df = BrandRepo().get_data_as_df()
+
+        def _make_images_response(df: DataFrame, product_id: int):
+            filtered_df = df[df["parent_id"] == product_id]
+            images_list = filtered_df.to_dict(
+                orient="records"
+            )  # Convert DataFrame to list of dicts
+            images_response = [
+                ImagesResSch(**image).model_dump() for image in images_list
+            ]
+            return images_response
+
         data_return = [
             ProductResponseSch(
                 **i,
                 brand=brands_df[brands_df["id"] == i["brand_id"]].iloc[0].to_dict(),
-                image=all_img_df[all_img_df["parent_id"] == i["id"]]
-                .sort_values(by=["id"], ascending=False)
-                .to_dict(orient="records"),
+                image=_make_images_response(all_img_df, i["id"]),
             ).model_dump(by_alias=True)
             for i in products
         ]
@@ -80,7 +90,6 @@ class ProductService(BaseService):
             (all_img_df["parent_id"] == data.id)
             & (all_img_df["parent_type"] == ImageParentTypes.PRODUCT)
         ]
-        images_df["url"] = S3_BUCKET_IMAGES_URL + images_df["name"]
         images_list = images_df.to_dict(
             orient="records"
         )  # Convert DataFrame to list of dicts
