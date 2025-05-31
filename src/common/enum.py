@@ -1,12 +1,12 @@
 class ColumnLabel:
-    ID = 'id'
-    NAME = 'name'
+    ID = "id"
+    NAME = "name"
 
     class Product:
         PRODUCT_ID = "productId"
 
-        PRICE = 'price'
-        IMAGES = 'images'
+        PRICE = "price"
+        IMAGES = "images"
 
         # query params
         MIN_PRICE = "minPrice"
@@ -24,7 +24,7 @@ class ColumnLabel:
         BRAND_ID = "brandId"
         BRAND_IDS = "brandIds"
 
-        BRAND = 'brand'
+        BRAND = "brand"
 
     class Match:
         MATCH_DATE = "matchDate"
@@ -77,3 +77,7 @@ class HTTPMethods:
 class SortDirections:
     DESC = "desc"
     ASC = "asc"
+
+
+class ImageParentTypes:
+    PRODUCT = 1

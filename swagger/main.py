@@ -1,6 +1,5 @@
 import os
 from logging import getLogger
-from string import Template
 
 os.environ["ENV"] = "dev"
 application_name = "Snail App Swagger UI"

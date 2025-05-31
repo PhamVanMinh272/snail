@@ -1,10 +1,11 @@
 import logging
 from datetime import datetime
 
+from src.common.enum import ImageParentTypes
 from src.common.exceptions import NotFound, InvalidData
 from src.common.utils import timer
 from src.data_repo import CategoryRepo, ProductRepo, ImageRepo, BrandRepo
-from src.schemas.image import NewImageSch
+from src.schemas.image import NewImageSch, ImagesResSch
 from src.schemas.product import (
     NewProductSch,
     UpdateProductSch,
@@ -12,8 +13,12 @@ from src.schemas.product import (
     UploadImgSch,
     SearchSch,
     ProductResponseSch,
+    ProductDetailResSch,
 )
+from src.schemas.category import CategoryResSch
+from src.schemas.brand import BrandResSch
 from src.services.general import BaseService
+from src.settings import S3_BUCKET_IMAGES_URL
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)
@@ -69,20 +74,34 @@ class ProductService(BaseService):
         brands_df = BrandRepo().get_data_as_df()
         if not data:
             raise NotFound(f"Not found product {product_id}")
+
+        # image response
+        images_df = all_img_df[
+            (all_img_df["parent_id"] == data.id)
+            & (all_img_df["parent_type"] == ImageParentTypes.PRODUCT)
+        ]
+        images_df["url"] = S3_BUCKET_IMAGES_URL + images_df["name"]
+        images_list = images_df.to_dict(
+            orient="records"
+        )  # Convert DataFrame to list of dicts
+        images_response = [ImagesResSch(**image).model_dump() for image in images_list]
+
+        # brand response
+        brand = brands_df[brands_df["id"] == data.brand_id].iloc[0].to_dict()
+        brand_response = BrandResSch(**brand).model_dump(by_alias=True)
+        # category response
+        category = category_df[category_df["id"] == data.category_id].iloc[0].to_dict()
+        category_response = CategoryResSch(**category).model_dump(by_alias=True)
+
         return {
-            "data": {
-                "id": data.id,
-                "name": data.name,
-                "price": data.price,
-                "images": all_img_df[
-                    (all_img_df["parent_id"] == data.id)
-                    & (all_img_df["parent_type"] == 1)
-                ].to_dict(orient="records"),
-                "brand": brands_df[brands_df["id"] == data.brand_id].iloc[0].to_dict(),
-                "category": category_df[category_df["id"] == data.category_id]
-                .iloc[0]
-                .to_dict(),
-            }
+            "data": ProductDetailResSch(
+                id=data.id,
+                name=data.name,
+                price=data.price,
+                images=images_response,
+                brand=brand_response,
+                category=category_response,
+            ).model_dump(by_alias=True)
         }
 
     @timer

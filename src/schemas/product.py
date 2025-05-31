@@ -18,7 +18,6 @@ def parse_list_str_to_number(list_str: list[str]):
     return list_str
 
 
-
 class NewProductSch(BaseModel):
     id: Optional[int] = Field(default=None, alias="id")
     name: Annotated[str, BeforeValidator(strip_str)] = Field(min_length=1)
@@ -46,9 +45,9 @@ class SearchSch(BaseModel):
         default=None, alias=ColumnLabel.Category.CATEGORY_ID
     )
     name: Annotated[Optional[str], BeforeValidator(strip_str)] = Field(default=None)
-    brand_ids: Annotated[Optional[list[int]], BeforeValidator(parse_list_str_to_number)] = Field(
-        default=[], alias=ColumnLabel.Brand.BRAND_IDS
-    )
+    brand_ids: Annotated[
+        Optional[list[int]], BeforeValidator(parse_list_str_to_number)
+    ] = Field(default=[], alias=ColumnLabel.Brand.BRAND_IDS)
     min_price: Optional[int] = Field(
         default=0, alias=ColumnLabel.Product.MIN_PRICE, ge=0
     )
@@ -77,3 +76,10 @@ class ProductResponseSch(BaseModel):
     image: list[dict] = Field(alias=ColumnLabel.Product.IMAGES)
 
 
+class ProductDetailResSch(BaseModel):
+    id: int
+    name: str
+    price: float
+    images: list[dict]
+    brand: dict
+    category: dict

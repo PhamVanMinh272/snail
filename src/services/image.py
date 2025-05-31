@@ -1,5 +1,4 @@
 import logging
-import logging
 import uuid
 
 from src.common.exceptions import NotFound

@@ -21,3 +21,4 @@ logger.info(FILE_PATH_TMP)
 
 S3_BUCKET = "snail-minh"
 REGION = "us-west-2"
+S3_BUCKET_IMAGES_URL = "https://s3.us-west-2.amazonaws.com/www.snail.com/public/"

@@ -20,3 +20,9 @@ class PathCategorySch(BaseModel):
 
 class UpdateCategorySch(NewCategorySch):
     id: int = Field(alias=ColumnLabel.Category.CATEGORY_ID)
+
+
+class CategoryResSch(BaseModel):
+    id: int
+    name: str
+    parent_id: Optional[int] = Field(default=None, alias="parentId")

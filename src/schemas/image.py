@@ -26,3 +26,9 @@ class UpdateImageSch(NewImageSch):
 class SearchSch(BaseModel):
     parent_id: int = Field(default=None)
     parent_type: int = Field(default=None)
+
+
+class ImagesResSch(BaseModel):
+    id: int = Field()
+    name: str = Field(default=None)
+    url: str = Field(default=None)
