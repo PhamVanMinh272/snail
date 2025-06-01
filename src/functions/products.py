@@ -70,39 +70,40 @@ def lambda_handler(event, context):
 
 
 if __name__ == "__main__":
-    event = {"resource": "/products/init", "method": "GET"}
+    # event = {"resource": "/products/init", "method": "GET"}
+    # event = {
+    #     "resource": Routes.Products.REF_PRODUCT_ID,
+    #     "headers": {"content-type": ""},
+    #     "httpMethod": HTTPMethods.GET,
+    #     "pathParameters": {"productId": 1},
+    #     "queryStringParameters": {"categoryId": 1, "sortPrice": "asc"},
+    #     "body": json.dumps(
+    #         {
+    #             # "name": "Cau Yonex", "categoryId": 1
+    #             "brandIds": ["2", "3"]
+    #         }
+    #     ),
+    # }
+    # rs = lambda_handler(event, None)
+    # body_rs = json.loads(rs["body"])
+    # print(json.dumps(body_rs, indent=4))
+
+    import base64
+
+
+    with open("C:/Users/ADMIN/Downloads/dog_smile.png", "rb") as img_file:
+        encoded_string = base64.b64encode(img_file.read()).decode('utf-8')
+
+    # print(encoded_string)
     event = {
-        "resource": Routes.Products.REF_PRODUCT_ID,
-        "headers": {"content-type": ""},
-        "httpMethod": HTTPMethods.GET,
-        "pathParameters": {"productId": 1},
-        "queryStringParameters": {"categoryId": 1, "sortPrice": "asc"},
-        "body": json.dumps(
-            {
-                # "name": "Cau Yonex", "categoryId": 1
-                "brandIds": ["2", "3"]
-            }
-        ),
+        "resource": Routes.Products.REF_PRODUCT_UPLOAD_IMAGE,
+        "headers": {'content-type': "multipart/form-data"},
+        "httpMethod": HTTPMethods.POST,
+        "pathParameters": {"productId": 2},
+        "body": json.dumps(encoded_string),
     }
     rs = lambda_handler(event, None)
     body_rs = json.loads(rs["body"])
     print(json.dumps(body_rs, indent=4))
 
-    # import base64
-    #
-    # with open("resource/products/vot-cau-long-yonex-arcsaber-2-feel-black-green-chinh-hang_1731868152.webp", "rb") as img_file:
-    #     encoded_string = base64.b64encode(img_file.read()).decode('utf-8')
-    #
-    # # print(encoded_string)
-    # event = {
-    #     "resource": Routes.Products.REF_PRODUCT_UPLOAD_IMAGE,
-    #     "headers": {'content-type': "multipart/form-data"},
-    #     "httpMethod": HTTPMethods.POST,
-    #     "pathParameters": {"productId": 12},
-    #     "body": json.dumps(encoded_string),
-    # }
-    # rs = lambda_handler(event, None)
-    # body_rs = json.loads(rs["body"])
-    # print(json.dumps(body_rs, indent=4))
-    #
-    #
+
