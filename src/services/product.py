@@ -172,7 +172,9 @@ class ProductService(BaseService):
 
         # upload image
         img_repo.upload_image(kwargs.get("file"), img_name)
-        return {"data": ImagesResSch(id=item_id, name=img_name).model_dump(by_alias=True)}
+        return {
+            "data": ImagesResSch(id=item_id, name=img_name).model_dump(by_alias=True)
+        }
 
     def get_brands(self, **kwargs):
         brands_df = BrandRepo().get_data_as_df()

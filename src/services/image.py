@@ -12,6 +12,7 @@ from src.schemas.image import (
     UpdateImageSch,
     PathImageSch,
     ImageNamePathSch,
+    ImageDeletionSch,
 )
 from src.services.general import BaseService
 
@@ -90,4 +91,26 @@ class ImageService(BaseService):
         return {"id": item_id}
 
     def delete(self, **kwargs) -> dict:
-        pass
+        """
+        Delete an image on Db and s3
+        """
+        params = ImageDeletionSch(**kwargs)
+        img_repo = ImageRepo()
+        if params.id:
+            key_id = params.id
+            img = img_repo.get_detail_by_id(key_id)
+            img_name = img.name
+        elif params.name:
+            img_df = img_repo.get_data_as_df()
+            img = img_df.loc[img_df["name"] == params.name][0].to_dict()
+            key_id = img["id"]
+            img_name = params.name
+        else:
+            raise InvalidData("Id or name required")
+
+        # delete record
+        img_repo.delete_by_id(key_id)
+
+        # delete on s3
+        img_repo.remove_image(img_name)
+        return {"data": None}

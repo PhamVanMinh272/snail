@@ -245,6 +245,20 @@
         "responses": {}
       }
     },
+    "/images/{imageId}" : {
+      "delete" : {
+        "tags": ["Images"],
+        "parameters" : [ {
+          "name" : "imageId",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "number"
+          }
+        } ],
+        "responses": {}
+      }
+    },
     "/images/{imageName}" : {
       "get" : {
         "tags": ["Images"],

@@ -64,3 +64,6 @@ class ImageRepo(BaseRepo):
             f"{self.image_s3_folder}/{image_name}"
         )
         return image_bytes
+
+    def remove_image(self, image_name: str):
+        self.s3_client_image.remove_image(f"{self.image_s3_folder}/{image_name}")

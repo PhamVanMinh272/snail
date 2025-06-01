@@ -52,3 +52,7 @@ class S3Client:
         response = self.s3.get_object(Bucket=self.bucket_name, Key=object_name)
         image_data = response["Body"].read()
         return image_data
+
+    def remove_image(self, object_name: str):
+        """Remove a file on s3"""
+        self.s3.delete_object(Bucket=self.bucket_name, Key=object_name)

@@ -1,4 +1,5 @@
 import copy
+from typing import Any
 
 import botocore
 import pandas as pd
@@ -111,6 +112,17 @@ class BaseRepo:
                 single_data["id"] = key_id
             # key_id = single_data.get("id") or self.get_new_id()
             data_dict[str(key_id)] = single_data
+        file_data = self.set_file_data(data_dict)
+
+        # upload to s3
+        logger.info("Uploading data ...")
+        self.s3_client.put_object_content(self.file_name, file_data)
+
+    def delete_by_id(self, key_id: Any):
+        """Remove a row by key id"""
+        # update new data to file data
+        data_dict = self.get_data()
+        data_dict.pop(str(key_id))
         file_data = self.set_file_data(data_dict)
 
         # upload to s3

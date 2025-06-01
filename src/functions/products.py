@@ -90,14 +90,13 @@ if __name__ == "__main__":
 
     import base64
 
-
     with open("C:/Users/ADMIN/Downloads/dog_smile.png", "rb") as img_file:
-        encoded_string = base64.b64encode(img_file.read()).decode('utf-8')
+        encoded_string = base64.b64encode(img_file.read()).decode("utf-8")
 
     # print(encoded_string)
     event = {
         "resource": Routes.Products.REF_PRODUCT_UPLOAD_IMAGE,
-        "headers": {'content-type': "multipart/form-data"},
+        "headers": {"content-type": "multipart/form-data"},
         "httpMethod": HTTPMethods.POST,
         "pathParameters": {"productId": 2},
         "body": json.dumps(encoded_string),
@@ -105,5 +104,3 @@ if __name__ == "__main__":
     rs = lambda_handler(event, None)
     body_rs = json.loads(rs["body"])
     print(json.dumps(body_rs, indent=4))
-
-

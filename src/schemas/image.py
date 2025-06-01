@@ -44,3 +44,10 @@ class ImageNamePathSch(BaseModel):
     """Get image by name"""
 
     name: str = Field(alias=ColumnLabel.Image.IMAGE_NAME)
+
+
+class ImageDeletionSch(BaseModel):
+    """Params for delete image"""
+
+    id: Optional[int] = Field(default=None, alias=ColumnLabel.Image.IMAGE_ID)
+    name: Optional[str] = Field(default=None, alias=ColumnLabel.Image.IMAGE_NAME)
