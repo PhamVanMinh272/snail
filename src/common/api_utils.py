@@ -3,7 +3,11 @@ import json
 from pydantic import ValidationError
 
 from src.common.exceptions import FileS3NotFound, AlreadyExist, NotFound, InvalidData
-from src.common.func_responses import make_error_response, make_success_response
+from src.common.func_responses import (
+    make_error_response,
+    make_success_response,
+    make_bytes_response,
+)
 from src.services.image import logger
 
 
@@ -11,6 +15,8 @@ def exception_handler(func):
     def wrapper(event, context):
         try:
             data = func(event, context)
+            if isinstance(data, bytes):
+                return make_bytes_response(data)
             return make_success_response(data)
         except (AlreadyExist, InvalidData) as e:
             logger.exception(e)

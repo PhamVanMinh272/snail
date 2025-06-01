@@ -161,7 +161,7 @@ class ProductService(BaseService):
         new_upload = UploadImgSch(**kwargs)
 
         # update data
-        img_name = f"product_{new_upload.parent_id}_{datetime.utcnow().strftime(format='%Y-%m-%dT%H:%M:%SZ')}.jpg"
+        img_name = f"product_{new_upload.parent_id}_{datetime.utcnow().strftime(format='%Y-%m-%dT%H:%M:%SZ')}.png"
         img_repo = ImageRepo()
         new_img = NewImageSch(
             name=img_name,

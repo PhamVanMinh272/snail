@@ -1,5 +1,6 @@
 import base64
 import json
+from typing import Any
 
 import boto3
 
@@ -36,4 +37,18 @@ class S3Client:
         image_bytes = base64.b64decode(body)
         # image_bytes = io.BytesIO(image_bytes)
         # image_bytes = body
-        self.s3.put_object(Body=image_bytes, Bucket=self.bucket_name, Key=object_name)
+        self.s3.put_object(
+            Body=image_bytes,
+            Bucket=self.bucket_name,
+            Key=object_name,
+            ContentType="image/png",
+        )
+
+    def get_image(self, object_name: str) -> bytes:
+        """
+        object_name: partial s3 url
+        Example: /public/f8d43da3-766d-4834-ad3f-3d010245fbbb.jpg
+        """
+        response = self.s3.get_object(Bucket=self.bucket_name, Key=object_name)
+        image_data = response["Body"].read()
+        return image_data

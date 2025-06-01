@@ -38,3 +38,9 @@ class ImagesResSch(BaseModel):
     def make_url(self) -> Self:
         self.url = S3_BUCKET_IMAGES_URL + self.name
         return self
+
+
+class ImageNamePathSch(BaseModel):
+    """Get image by name"""
+
+    name: str = Field(alias=ColumnLabel.Image.IMAGE_NAME)

@@ -245,6 +245,20 @@
         "responses": {}
       }
     },
+    "/images/{imageName}" : {
+      "get" : {
+        "tags": ["Images"],
+        "parameters" : [ {
+          "name" : "imageName",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses": {}
+      }
+    },
     "/matches" : {
       "get": {
         "tags": [

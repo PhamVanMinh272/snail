@@ -19,6 +19,7 @@ class ColumnLabel:
 
     class Image:
         IMAGE_ID = "imageId"
+        IMAGE_NAME = "imageName"
 
     class Brand:
         BRAND_ID = "brandId"
@@ -53,6 +54,7 @@ class Routes:
     class Images:
         REF_IMAGE_ID = "/images/{imageId}"
         REF_IMAGE = "/images"
+        REF_IMAGE_BY_NAME = "/images/{imageName}"
 
     class Brands:
         REF_BRAND_ID = "/brands/{brandId}"

@@ -195,6 +195,22 @@ Resources:
             Method: get
             RestApiId: !Ref ApiDeployment
 
+  ImagesFunction:
+    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Properties:
+      Role: !GetAtt ProductsFunctionRole.Arn
+      CodeUri: ./
+      Handler: src/functions/images.lambda_handler
+      Architectures:
+        - x86_64
+      Events:
+        getImage:
+          Type: Api
+          Properties:
+            Path: /images/{imageName}
+            Method: get
+            RestApiId: !Ref ApiDeployment
+
   MatchesFunction:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:

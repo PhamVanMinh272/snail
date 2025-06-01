@@ -1,10 +1,18 @@
 import logging
 import uuid
+from io import BytesIO
 
-from src.common.exceptions import NotFound
+import botocore
+
+from src.common.exceptions import NotFound, InvalidData
 from src.common.utils import timer
 from src.data_repo.image import ImageRepo
-from src.schemas.image import NewImageSch, UpdateImageSch, PathImageSch
+from src.schemas.image import (
+    NewImageSch,
+    UpdateImageSch,
+    PathImageSch,
+    ImageNamePathSch,
+)
 from src.services.general import BaseService
 
 logger = logging.getLogger(__name__)
@@ -34,6 +42,19 @@ class ImageService(BaseService):
         if not data:
             raise NotFound(f"Not found category {item_id}")
         return {"id": data.id, "name": data.name, "parent": data.parent_id}
+
+    def get_image_by_name(self, **kwargs) -> bytes:
+        """
+        name: image name
+        """
+        image_name = ImageNamePathSch(**kwargs).name
+        image_repo = ImageRepo()
+        try:
+            image_bytes = image_repo.download_image(image_name)
+            return image_bytes
+        except botocore.errorfactory.NoSuchKey as e:
+            logger.exception(e)
+            raise InvalidData("Image not found")
 
     @timer
     def create(self, **kwargs) -> dict:

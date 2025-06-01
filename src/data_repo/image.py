@@ -54,3 +54,13 @@ class ImageRepo(BaseRepo):
         self.s3_client_image.put_image(
             f"{self.image_s3_folder}/{image_name}", image_data_str
         )
+
+    def download_image(self, image_name: str) -> bytes:
+        """
+        I want to return image bytes here
+        image_name: just name, not an url
+        """
+        image_bytes = self.s3_client_image.get_image(
+            f"{self.image_s3_folder}/{image_name}"
+        )
+        return image_bytes
