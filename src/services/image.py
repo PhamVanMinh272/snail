@@ -114,5 +114,6 @@ class ImageService(BaseService):
         img_repo.delete_by_id(key_id)
 
         # delete on s3
+        logger.info(f"Deleting image name {img_name} ...")
         img_repo.remove_image(img_name)
         return {"data": None}

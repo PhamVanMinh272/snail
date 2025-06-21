@@ -81,7 +81,7 @@ Resources:
     Type: AWS::CloudFront::Distribution
     Properties:
       DistributionConfig:
-        Enabled: true  # Enabled should be defined here
+        Enabled: false  # Enabled should be defined here
         Origins:
           - DomainName: !Sub '${ApiDeployment}.execute-api.${AWS::Region}.amazonaws.com'
             Id: ApiOrigin
