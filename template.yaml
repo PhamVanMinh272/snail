@@ -97,8 +97,8 @@ Resources:
   SwaggerFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: ./swagger
-      Handler: main.lambda_handler
+      CodeUri: ./
+      Handler: src/swagger/main.lambda_handler
       Architectures:
         - x86_64
       Events:
@@ -207,8 +207,14 @@ Resources:
         getImage:
           Type: Api
           Properties:
-            Path: /images/{imageName}
+            Path: /images/by-name/{imageName}
             Method: get
+            RestApiId: !Ref ApiDeployment
+        deleteImage:
+          Type: Api
+          Properties:
+            Path: /images/{imageId}
+            Method: delete
             RestApiId: !Ref ApiDeployment
 
   MatchesFunction:
