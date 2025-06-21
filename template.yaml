@@ -45,6 +45,7 @@ Resources:
                   - s3:ListBucket
                   - s3:GetObject
                   - s3:PutObject
+                  - s3:DeleteObject
 #                Resource: !Sub '${ProductsS3.Arn}/*'
                 Resource: "*"
               - Effect: Allow
@@ -97,8 +98,8 @@ Resources:
   SwaggerFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: ./
-      Handler: src/swagger/main.lambda_handler
+      CodeUri: ./swagger
+      Handler: main.lambda_handler
       Architectures:
         - x86_64
       Events:
