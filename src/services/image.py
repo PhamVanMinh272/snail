@@ -99,6 +99,8 @@ class ImageService(BaseService):
         if params.id:
             key_id = params.id
             img = img_repo.get_detail_by_id(key_id)
+            if not img:
+                raise InvalidData(f"Image id {key_id} not found")
             img_name = img.name
         elif params.name:
             img_df = img_repo.get_data_as_df()

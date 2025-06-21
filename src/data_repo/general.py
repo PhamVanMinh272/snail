@@ -67,6 +67,8 @@ class BaseRepo:
 
         data = self.get_data()
         item = data.get(str(item_id))
+        if not item:
+            return None
         return DictObj(item)
 
     def check_exist_by_name(self, name: str, item_id: int = None):

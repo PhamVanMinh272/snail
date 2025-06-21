@@ -48,7 +48,7 @@ if __name__ == "__main__":
     event = {
         "resource": Routes.Images.REF_IMAGE_ID,
         "httpMethod": HTTPMethods.DELETE,
-        "pathParameters": {"imageName": "9b6ed022-89d7-47af-bc6f-5dd1696034a0.png", "imageId": 41},
+        "pathParameters": {"imageName": "9b6ed022-89d7-47af-bc6f-5dd1696034a0.png", "imageId": 1},
         "body": json.dumps({"name": "Ong Cau long", "parent": None}),
     }
     rs = lambda_handler(event, None)
